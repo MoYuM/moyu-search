@@ -1,0 +1,50 @@
+{
+  "extensionName": {
+    "message": "Moyu Search",
+    "description": "扩展的名字"
+  },
+  "extensionDescription": {
+    "message": "A better tab search experience",
+    "description": "扩展的描述"
+  },
+  "popup": {
+    "message": "Logic is the beginning of wisdom, not the end.",
+    "description": "弹窗的消息"
+  },
+  "settings": {
+    "message": "⚙️ Settings",
+    "description": "设置标题"
+  },
+  "searchEngine": {
+    "message": "Search Engine",
+    "description": "搜索引擎标签"
+  },
+  "appearance": {
+    "message": "Appearance",
+    "description": "外观标签"
+  },
+  "selectSearchEngine": {
+    "message": "Please select search engine",
+    "description": "搜索引擎选择提示"
+  },
+  "selectAppearance": {
+    "message": "Please select appearance",
+    "description": "外观选择提示"
+  },
+  "searchPlaceholder": {
+    "message": "Search tabs, history, bookmarks...",
+    "description": "搜索框占位符"
+  },
+  "configAppearanceSystem": {
+    "message": "System",
+    "description": "系统外观"
+  },
+  "configAppearanceLight": {
+    "message": "Light",
+    "description": "浅色外观"
+  },
+  "configAppearanceDark": {
+    "message": "Dark",
+    "description": "深色外观"
+  }
+}
