@@ -11,6 +11,7 @@ export const STORAGE_KEY = 'userOptions'
 export const DEFAULT_OPTIONS: UserOptions = {
   searchEngine: 'google',
   appearance: 'system',
+  hotkey: 'ctrl+p',
 }
 
 export interface UserOptions {
@@ -18,6 +19,8 @@ export interface UserOptions {
   searchEngine: 'google' | 'bing' | 'baidu'
   /** 外观 */
   appearance: 'light' | 'dark' | 'system'
+  /** 触发弹窗的快捷键 */
+  hotkey: string
 }
 
 export async function getUserOptions() {

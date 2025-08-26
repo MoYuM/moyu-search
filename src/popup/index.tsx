@@ -5,6 +5,7 @@ import { useTheme } from '~hooks/useTheme'
 import { getUserOptions, setUserOptions } from '~store/options'
 import { t } from '~utils/i18n'
 import { version } from '../../package.json'
+import HotkeyInput from './components/hotkeyInput'
 import './index.css'
 
 const algorithmMap = {
@@ -62,6 +63,11 @@ function IndexPopup() {
             <Select
               options={APPEARANCE_OPTIONS}
               placeholder={t('selectAppearance')}
+            />
+          </Form.Item>
+          <Form.Item label={t('hotkey')} name="hotkey" className="w-full">
+            <HotkeyInput
+              placeholder={t('clickToRecordHotkey')}
             />
           </Form.Item>
         </Form>

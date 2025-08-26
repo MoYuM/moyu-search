@@ -54,5 +54,21 @@
   "configAppearanceDark": {
     "message": "深色",
     "description": "深色外观"
+  },
+  "hotkey": {
+    "message": "快捷键",
+    "description": "快捷键标签"
+  },
+  "recordHotkey": {
+    "message": "录制",
+    "description": "快捷键录制提示"
+  },
+  "confirmHotkey": {
+    "message": "确定",
+    "description": "快捷键录制确认提示"
+  },
+  "clickToRecordHotkey": {
+    "message": "点击录制快捷键",
+    "description": "快捷键录制提示"
   }
 }
