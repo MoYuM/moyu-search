@@ -7,7 +7,7 @@
   "author": "moyum",
   "scripts": {
     "dev": "plasmo dev",
-    "build": "plasmo build",
+    "build": "cross-env PARCEL_WORKER_BACKEND=process plasmo build --target=chrome-mv3",
     "package": "plasmo package",
     "lint": "npx eslint",
     "lint:fix": "npx eslint --fix",
@@ -36,6 +36,7 @@
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
+    "cross-env": "^10.0.0",
     "eslint": "^9.31.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
