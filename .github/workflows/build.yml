@@ -2,8 +2,8 @@ name: build
 
 on:
   push:
-    tags:
-      - "v*"   # 只在 v 开头的 tag 时触发，比如 v1.0.0
+    branches:
+      - main
 
 jobs:
   build-and-release:
