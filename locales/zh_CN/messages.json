@@ -70,5 +70,9 @@
   "clickToRecordHotkey": {
     "message": "点击录制快捷键",
     "description": "快捷键录制提示"
+  },
+  "recordingHotkey": {
+    "message": "录制中...",
+    "description": "快捷键录制中提示"
   }
 }

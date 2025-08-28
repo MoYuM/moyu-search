@@ -1,5 +1,5 @@
-import { Button, Input, Space } from 'antd'
-import { useEffect } from 'react'
+import { Input } from 'antd'
+import { useEffect, useRef, useState } from 'react'
 import { useRecordHotkeys } from 'react-hotkeys-hook'
 import { t } from '~utils/i18n'
 
@@ -9,86 +9,69 @@ interface HotkeyInputProps {
   placeholder?: string
 }
 
-/**
- * 验证快捷键是否有效
- * @param hotkeyString 快捷键字符串
- * @returns 是否有效
- */
-export function isValidHotkey(hotkeyString: string[]): boolean {
-  if (!hotkeyString)
-    return false
-
-  const keys = hotkeyString.map(key => key.toLowerCase())
-
-  // 至少需要一个修饰键和一个功能键
-  if (keys.length < 2)
-    return false
-
-  const modifierKeys = ['ctrl', 'cmd', 'alt', 'shift', 'meta']
-  const hasModifier = keys.some(key => modifierKeys.includes(key))
-
-  if (!hasModifier)
-    return false
-
-  return true
-}
-
 const HotkeyInput: React.FC<HotkeyInputProps> = ({ value, onChange, placeholder }) => {
+  const inputRef = useRef<any>(null)
+  // 内部状态管理显示值
+  const [displayValue, setDisplayValue] = useState(value || '')
+
   // 使用 useRecordHotkeys 录制快捷键
   const [keys, { start, stop, resetKeys, isRecording }] = useRecordHotkeys()
 
-  // 处理录制结果
-  const handleRecordingResult = (hotkeyString: string[]) => {
-    if (isValidHotkey(hotkeyString)) {
-      onChange?.(hotkeyString.join('+'))
-    }
-  }
-
-  // 处理录制结果
+  // 同步外部 value 到内部状态
   useEffect(() => {
-    // 当录制完成且有按键时，处理结果
-    if (keys.size > 0 && isRecording) {
-      handleRecordingResult(Array.from(keys))
+    setDisplayValue(value || '')
+  }, [value])
+
+  // 处理录制结果 - 只在录制完成时更新
+  useEffect(() => {
+    const keyList = Array.from(keys)
+
+    // 只在录制完成且有按键时更新显示值
+    if (keyList.length > 0 && !isRecording) {
+      const newValue = keyList.join('+')
+      setDisplayValue(newValue)
+      // 录制完成时同步到表单
+      onChange?.(newValue)
     }
-  }, [keys, isRecording])
+  }, [keys, isRecording, onChange])
 
-  // 开始录制
-  const handleStartRecording = () => {
-    resetKeys()
-    start()
+  // 点击 input 开始录制
+  const handleInputClick = () => {
+    if (!isRecording) {
+      resetKeys()
+      start()
+    }
   }
 
-  // 停止录制
-  const handleStopRecording = () => {
-    stop()
-  }
+  // 监听按键抬起事件，自动停止录制
+  useEffect(() => {
+    const handleKeyUp = () => {
+      if (isRecording) {
+        stop()
+      }
+    }
+
+    if (isRecording) {
+      document.addEventListener('keyup', handleKeyUp)
+      return () => document.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [isRecording, stop])
 
   return (
-    <Space.Compact style={{ width: '100%' }}>
-      <Input
-        value={value}
-        placeholder={placeholder}
-        readOnly
-      />
-      {isRecording
-        ? (
-            <Button
-              type="primary"
-              danger
-              onClick={handleStopRecording}
-            >
-              {t('confirmHotkey')}
-            </Button>
-          )
-        : (
-            <Button
-              type="primary"
-              onClick={handleStartRecording}
-            >
-              {t('recordHotkey')}
-            </Button>
-          )}
-    </Space.Compact>
+    <Input
+      ref={inputRef}
+      value={displayValue}
+      placeholder={isRecording ? t('recordingHotkey') : placeholder}
+      readOnly
+      onClick={handleInputClick}
+      className={`cursor-pointer ${isRecording ? 'ring-2 ring-blue-500 bg-blue-50' : ''}`}
+      style={{
+        backgroundColor: isRecording ? '#eff6ff' : undefined,
+        borderColor: isRecording ? '#3b82f6' : undefined,
+        color: isRecording ? '#1e40af' : undefined,
+        fontWeight: isRecording ? '600' : undefined,
+      }}
+    />
   )
 }
 

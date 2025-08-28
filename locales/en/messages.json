@@ -62,5 +62,9 @@
   "clickToRecordHotkey": {
     "message": "Click to record hotkey",
     "description": "快捷键录制提示"
+  },
+  "recordingHotkey": {
+    "message": "Recording...",
+    "description": "Hotkey recording in progress"
   }
 }

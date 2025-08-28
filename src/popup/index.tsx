@@ -28,8 +28,11 @@ function IndexPopup() {
     form.setFieldsValue(userOptions)
   }
 
-  const handleFormChange = (allValues: any) => {
-    setUserOptions(allValues)
+  const handleFormChange = (changedValues: any, allValues: any) => {
+    // 热键录制完成时，直接更新选项
+    if (changedValues.hotkey !== undefined) {
+      setUserOptions(allValues)
+    }
   }
 
   return (
@@ -49,9 +52,7 @@ function IndexPopup() {
           size="small"
           labelCol={{ span: 10 }}
           wrapperCol={{ span: 14 }}
-          onValuesChange={(_, allValues) => {
-            handleFormChange(allValues)
-          }}
+          onValuesChange={handleFormChange}
         >
           <Form.Item label={t('searchEngine')} name="searchEngine" className="w-full">
             <Select
@@ -65,7 +66,33 @@ function IndexPopup() {
               placeholder={t('selectAppearance')}
             />
           </Form.Item>
-          <Form.Item label={t('hotkey')} name="hotkey" className="w-full">
+          <Form.Item
+            label={t('hotkey')}
+            name="hotkey"
+            className="w-full"
+            rules={[{
+              validator: (_, val: string) => {
+                if (!val) {
+                  return Promise.reject(new Error('请按下快捷键以进行录制'))
+                }
+
+                const keys = val.split('+')
+                const modifierKeys = ['ctrl', 'cmd', 'alt', 'shift', 'meta']
+                const hasModifier = keys.some(key => modifierKeys.includes(key))
+                const hasNormalKey = keys.some(key => !modifierKeys.includes(key))
+
+                if (!hasModifier) {
+                  return Promise.reject(new Error('至少需要一个修饰键'))
+                }
+
+                if (!hasNormalKey) {
+                  return Promise.reject(new Error('至少有一个功能键'))
+                }
+
+                return Promise.resolve()
+              },
+            }]}
+          >
             <HotkeyInput
               placeholder={t('clickToRecordHotkey')}
             />
