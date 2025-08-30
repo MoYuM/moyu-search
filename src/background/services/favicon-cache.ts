@@ -18,27 +18,36 @@ function getFaviconCacheKey(url: string): string {
   }
 }
 
-// 从URL中提取 host 缓存key
-function getHostFaviconCacheKey(url: string): string {
-  try {
-    const urlObj = new URL(url)
-    return `${prefix}${urlObj.host}`
-  }
-  catch {
-    return `${prefix}${url}`
-  }
-}
-
 // 获取缓存的 favicon
 async function getFaviconFromCache(url: string): Promise<string | undefined> {
   const cacheKey = getFaviconCacheKey(url)
   return await storage.get<string>(cacheKey)
 }
 
-// 获取 host 级别的 favicon 缓存
+// 获取 host 级别的 favicon 缓存（从已有的精确缓存中推断）
 async function getHostFaviconFromCache(url: string): Promise<string | undefined> {
-  const hostCacheKey = getHostFaviconCacheKey(url)
-  return await storage.get<string>(hostCacheKey)
+  try {
+    const urlObj = new URL(url)
+    const host = urlObj.host
+
+    // 由于无法获取所有键，我们采用一个简化的策略：
+    // 尝试一些常见的路径来推断favicon
+    const commonPaths = ['', '/', '/index', '/home', '/main']
+
+    for (const path of commonPaths) {
+      const testKey = `${prefix}${host}${path}`
+      const cached = await storage.get<string>(testKey)
+      if (cached) {
+        return cached
+      }
+    }
+
+    return undefined
+  }
+  catch {
+    // 如果URL解析失败，返回undefined
+    return undefined
+  }
 }
 
 // 智能获取 favicon：优先精确匹配，再 host 级别匹配
