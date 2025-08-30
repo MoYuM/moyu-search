@@ -303,7 +303,7 @@ function Popup() {
               onMouseDown={() => setIsKeyboardNav(false)}
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
-                <FaviconImg favicon={item.favicon} url={item.url} />
+                <FaviconImg favicon={item.faviconDataUrl || item.favicon} url={item.url} />
                 <div className="truncate flex-1 text-base font-medium text-zinc-900 dark:text-zinc-100">{item.title}</div>
               </div>
               <div className="flex items-center gap-1 text-xs text-zinc-400 select-none">
