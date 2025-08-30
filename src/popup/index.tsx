@@ -17,7 +17,7 @@ const { Title } = Typography
 
 function validateHotkey(val: string) {
   if (!val) {
-    return Promise.reject(new Error('请按下快捷键以进行录制'))
+    return Promise.reject(new Error(t('hotkeyErrorNoKey')))
   }
 
   const keys = val.split('+')
@@ -26,11 +26,11 @@ function validateHotkey(val: string) {
   const hasNormalKey = keys.some(key => !modifierKeys.includes(key))
 
   if (!hasModifier) {
-    return Promise.reject(new Error('至少需要一个修饰键'))
+    return Promise.reject(new Error(t('hotkeyErrorNoModifier')))
   }
 
   if (!hasNormalKey) {
-    return Promise.reject(new Error('至少有一个功能键'))
+    return Promise.reject(new Error(t('hotkeyErrorNoNormalKey')))
   }
 
   return Promise.resolve()

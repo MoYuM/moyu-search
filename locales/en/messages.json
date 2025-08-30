@@ -66,5 +66,17 @@
   "recordingHotkey": {
     "message": "Recording...",
     "description": "Hotkey recording in progress"
+  },
+  "hotkeyErrorNoKey": {
+    "message": "Please press a hotkey to record",
+    "description": "快捷键验证错误：没有按键"
+  },
+  "hotkeyErrorNoModifier": {
+    "message": "At least one modifier key is required",
+    "description": "快捷键验证错误：缺少修饰键"
+  },
+  "hotkeyErrorNoNormalKey": {
+    "message": "At least one function key is required",
+    "description": "快捷键验证错误：缺少功能键"
   }
 }
