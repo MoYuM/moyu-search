@@ -61,13 +61,8 @@ async function getFaviconSmart(url: string): Promise<string | undefined> {
 
 // 将 favicon 存储到缓存
 async function setFaviconToCache(url: string, dataUrl: string): Promise<void> {
-  // 存储精确匹配的缓存 (host + pathname)
   const cacheKey = getFaviconCacheKey(url)
   await storage.set(cacheKey, dataUrl)
-
-  // 同时存储 host 级别的缓存，用于推断
-  const hostCacheKey = getHostFaviconCacheKey(url)
-  await storage.set(hostCacheKey, dataUrl)
 }
 
 // 将图片转换为base64
@@ -85,8 +80,14 @@ async function imageToBase64(imageUrl: string): Promise<string> {
 }
 
 // 获取或缓存 favicon
-export async function getOrCacheFavicon(url: string, faviconUrl: string): Promise<string | undefined> {
+export async function getOrCacheFavicon(url?: string, faviconUrl?: string): Promise<string | undefined> {
   if (!faviconUrl) {
+    console.error('没有 faviconUrl')
+    return undefined
+  }
+
+  if (!url) {
+    console.error('没有 URL')
     return undefined
   }
 
