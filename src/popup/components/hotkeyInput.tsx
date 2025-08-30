@@ -64,6 +64,7 @@ const HotkeyInput: React.FC<HotkeyInputProps> = ({ value, onChange, placeholder 
       placeholder={isRecording ? t('recordingHotkey') : placeholder}
       readOnly
       onClick={handleInputClick}
+      onBlur={stop}
       className={`cursor-pointer ${isRecording ? 'ring-2 ring-blue-500 bg-blue-50' : ''}`}
       style={{
         backgroundColor: isRecording ? '#eff6ff' : undefined,
