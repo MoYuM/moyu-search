@@ -67,16 +67,46 @@ async function setFaviconToCache(url: string, dataUrl: string): Promise<void> {
 
 // 将图片转换为base64
 async function imageToBase64(imageUrl: string): Promise<string> {
-  const response = await fetch(imageUrl)
-  const blob = await response.blob()
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      resolve(reader.result as string)
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 10000) // 10秒超时
+
+  try {
+    const response = await fetch(imageUrl, {
+      signal: controller.signal,
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
     }
-    reader.onerror = reject
-    reader.readAsDataURL(blob)
-  })
+
+    const blob = await response.blob()
+
+    // 检查文件大小限制 (1MB)
+    if (blob.size > 1024 * 1024) {
+      throw new Error('Image too large (max 1MB)')
+    }
+
+    // 检查文件类型
+    if (!blob.type.startsWith('image/')) {
+      throw new Error('Not an image file')
+    }
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(reader.result as string)
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    })
+  }
+  catch (error) {
+    if (error.name === 'AbortError') {
+      throw new Error('Image download timeout (10s)')
+    }
+    throw error
+  }
+  finally {
+    clearTimeout(timeoutId)
+  }
 }
 
 // 获取或缓存 favicon
@@ -106,24 +136,31 @@ export async function getOrCacheFavicon(url?: string, faviconUrl?: string): Prom
 
     return base64Data
   }
-  catch {
+  catch (error) {
+    console.warn('Failed to get or cache favicon for:', url, error)
     return undefined
   }
 }
 
 // 为搜索项处理 favicon：优先使用现有 favicon，再尝试智能推断
 export async function processFaviconForItem(url: string, favicon?: string): Promise<string | undefined> {
-  let faviconDataUrl: string | undefined
+  try {
+    let faviconDataUrl: string | undefined
 
-  // 1. 如果有 favicon，优先使用 getOrCacheFavicon
-  if (favicon) {
-    faviconDataUrl = await getOrCacheFavicon(url, favicon)
+    // 1. 如果有 favicon，优先使用 getOrCacheFavicon
+    if (favicon) {
+      faviconDataUrl = await getOrCacheFavicon(url, favicon)
+    }
+
+    // 2. 如果没有 favicon 或获取失败，尝试智能推断
+    if (!faviconDataUrl) {
+      faviconDataUrl = await getFaviconSmart(url)
+    }
+
+    return faviconDataUrl
   }
-
-  // 2. 如果没有 favicon 或获取失败，尝试智能推断
-  if (!faviconDataUrl) {
-    faviconDataUrl = await getFaviconSmart(url)
+  catch (error) {
+    console.warn('Favicon processing failed for:', url, error)
+    return undefined
   }
-
-  return faviconDataUrl
 }
