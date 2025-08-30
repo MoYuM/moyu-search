@@ -1,10 +1,11 @@
-import { ConfigProvider, Divider, Form, Layout, Select, theme, Typography } from 'antd'
+import { ConfigProvider, Divider, Form, Layout, message, Select, theme, Typography } from 'antd'
 import { useEffect } from 'react'
 import { APPEARANCE_OPTIONS, SEARCH_ENGINE_OPTIONS } from '~const'
 import { useTheme } from '~hooks/useTheme'
 import { getUserOptions, setUserOptions } from '~store/options'
 import { t } from '~utils/i18n'
 import { version } from '../../package.json'
+import HotkeyInput from './components/hotkeyInput'
 import './index.css'
 
 const algorithmMap = {
@@ -13,6 +14,27 @@ const algorithmMap = {
 }
 
 const { Title } = Typography
+
+function validateHotkey(val: string) {
+  if (!val) {
+    return Promise.reject(new Error(t('hotkeyErrorNoKey')))
+  }
+
+  const keys = val.split('+')
+  const modifierKeys = ['ctrl', 'cmd', 'alt', 'shift', 'meta']
+  const hasModifier = keys.some(key => modifierKeys.includes(key))
+  const hasNormalKey = keys.some(key => !modifierKeys.includes(key))
+
+  if (!hasModifier) {
+    return Promise.reject(new Error(t('hotkeyErrorNoModifier')))
+  }
+
+  if (!hasNormalKey) {
+    return Promise.reject(new Error(t('hotkeyErrorNoNormalKey')))
+  }
+
+  return Promise.resolve()
+}
 
 function IndexPopup() {
   const [form] = Form.useForm()
@@ -27,8 +49,17 @@ function IndexPopup() {
     form.setFieldsValue(userOptions)
   }
 
-  const handleFormChange = (allValues: any) => {
-    setUserOptions(allValues)
+  const handleFormChange = (changedValues: any, allValues: any) => {
+    if (changedValues.hotkey) {
+      validateHotkey(changedValues.hotkey).then(() => {
+        setUserOptions(allValues)
+      }).catch((err) => {
+        message.error(err.message)
+      })
+    }
+    else {
+      setUserOptions(allValues)
+    }
   }
 
   return (
@@ -48,9 +79,7 @@ function IndexPopup() {
           size="small"
           labelCol={{ span: 10 }}
           wrapperCol={{ span: 14 }}
-          onValuesChange={(_, allValues) => {
-            handleFormChange(allValues)
-          }}
+          onValuesChange={handleFormChange}
         >
           <Form.Item label={t('searchEngine')} name="searchEngine" className="w-full">
             <Select
@@ -62,6 +91,18 @@ function IndexPopup() {
             <Select
               options={APPEARANCE_OPTIONS}
               placeholder={t('selectAppearance')}
+            />
+          </Form.Item>
+          <Form.Item
+            label={t('hotkey')}
+            name="hotkey"
+            className="w-full"
+            rules={[{
+              validator: (_, val: string) => validateHotkey(val),
+            }]}
+          >
+            <HotkeyInput
+              placeholder={t('clickToRecordHotkey')}
             />
           </Form.Item>
         </Form>

@@ -46,5 +46,37 @@
   "configAppearanceDark": {
     "message": "Dark",
     "description": "深色外观"
+  },
+  "hotkey": {
+    "message": "Hotkey",
+    "description": "快捷键标签"
+  },
+  "recordHotkey": {
+    "message": "Record",
+    "description": "快捷键录制提示"
+  },
+  "confirmHotkey": {
+    "message": "Confirm",
+    "description": "快捷键录制确认提示"
+  },
+  "clickToRecordHotkey": {
+    "message": "Click to record hotkey",
+    "description": "快捷键录制提示"
+  },
+  "recordingHotkey": {
+    "message": "Recording...",
+    "description": "Hotkey recording in progress"
+  },
+  "hotkeyErrorNoKey": {
+    "message": "Please press a hotkey to record",
+    "description": "快捷键验证错误：没有按键"
+  },
+  "hotkeyErrorNoModifier": {
+    "message": "At least one modifier key is required",
+    "description": "快捷键验证错误：缺少修饰键"
+  },
+  "hotkeyErrorNoNormalKey": {
+    "message": "At least one function key is required",
+    "description": "快捷键验证错误：缺少功能键"
   }
 }
