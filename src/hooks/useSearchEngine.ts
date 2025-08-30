@@ -41,8 +41,8 @@ export function useSearchEngine() {
     }
   }
 
-  const upFirstLetter = (keyword: string) => {
-    return keyword.charAt(0).toUpperCase() + keyword.slice(1)
+  const upFirstLetter = (keyword?: string) => {
+    return keyword?.charAt(0).toUpperCase() + keyword?.slice(1)
   }
 
   const getSearchItem = (keyword: string): SearchResult => {
