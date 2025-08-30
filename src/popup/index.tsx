@@ -1,4 +1,4 @@
-import { ConfigProvider, Divider, Form, Layout, Select, theme, Typography } from 'antd'
+import { ConfigProvider, Divider, Form, Layout, message, Select, theme, Typography } from 'antd'
 import { useEffect } from 'react'
 import { APPEARANCE_OPTIONS, SEARCH_ENGINE_OPTIONS } from '~const'
 import { useTheme } from '~hooks/useTheme'
@@ -15,6 +15,27 @@ const algorithmMap = {
 
 const { Title } = Typography
 
+function validateHotkey(val: string) {
+  if (!val) {
+    return Promise.reject(new Error('请按下快捷键以进行录制'))
+  }
+
+  const keys = val.split('+')
+  const modifierKeys = ['ctrl', 'cmd', 'alt', 'shift', 'meta']
+  const hasModifier = keys.some(key => modifierKeys.includes(key))
+  const hasNormalKey = keys.some(key => !modifierKeys.includes(key))
+
+  if (!hasModifier) {
+    return Promise.reject(new Error('至少需要一个修饰键'))
+  }
+
+  if (!hasNormalKey) {
+    return Promise.reject(new Error('至少有一个功能键'))
+  }
+
+  return Promise.resolve()
+}
+
 function IndexPopup() {
   const [form] = Form.useForm()
   const [theme] = useTheme()
@@ -29,8 +50,14 @@ function IndexPopup() {
   }
 
   const handleFormChange = (changedValues: any, allValues: any) => {
-    // 热键录制完成时，直接更新选项
-    if (changedValues.hotkey !== undefined) {
+    if (changedValues.hotkey) {
+      validateHotkey(changedValues.hotkey).then(() => {
+        setUserOptions(allValues)
+      }).catch((err) => {
+        message.error(err.message)
+      })
+    }
+    else {
       setUserOptions(allValues)
     }
   }
@@ -71,26 +98,7 @@ function IndexPopup() {
             name="hotkey"
             className="w-full"
             rules={[{
-              validator: (_, val: string) => {
-                if (!val) {
-                  return Promise.reject(new Error('请按下快捷键以进行录制'))
-                }
-
-                const keys = val.split('+')
-                const modifierKeys = ['ctrl', 'cmd', 'alt', 'shift', 'meta']
-                const hasModifier = keys.some(key => modifierKeys.includes(key))
-                const hasNormalKey = keys.some(key => !modifierKeys.includes(key))
-
-                if (!hasModifier) {
-                  return Promise.reject(new Error('至少需要一个修饰键'))
-                }
-
-                if (!hasNormalKey) {
-                  return Promise.reject(new Error('至少有一个功能键'))
-                }
-
-                return Promise.resolve()
-              },
+              validator: (_, val: string) => validateHotkey(val),
             }]}
           >
             <HotkeyInput
