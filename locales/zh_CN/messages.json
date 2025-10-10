@@ -54,5 +54,37 @@
   "configAppearanceDark": {
     "message": "深色",
     "description": "深色外观"
+  },
+  "hotkey": {
+    "message": "快捷键",
+    "description": "快捷键标签"
+  },
+  "recordHotkey": {
+    "message": "录制",
+    "description": "快捷键录制提示"
+  },
+  "confirmHotkey": {
+    "message": "确定",
+    "description": "快捷键录制确认提示"
+  },
+  "clickToRecordHotkey": {
+    "message": "点击录制快捷键",
+    "description": "快捷键录制提示"
+  },
+  "recordingHotkey": {
+    "message": "录制中...",
+    "description": "快捷键录制中提示"
+  },
+  "hotkeyErrorNoKey": {
+    "message": "请按下快捷键以进行录制",
+    "description": "快捷键验证错误：没有按键"
+  },
+  "hotkeyErrorNoModifier": {
+    "message": "至少需要一个修饰键",
+    "description": "快捷键验证错误：缺少修饰键"
+  },
+  "hotkeyErrorNoNormalKey": {
+    "message": "至少有一个功能键",
+    "description": "快捷键验证错误：缺少功能键"
   }
 }

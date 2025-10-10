@@ -1,15 +1,17 @@
 import type { PlasmoMessaging } from '@plasmohq/messaging'
+import { getOrCacheFavicon } from '../services/favicon-cache'
 
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  const { url } = req.body
+  const { url, favicon } = req.body
+
+  if (!favicon) {
+    res.send({ dataUrl: null })
+    return
+  }
+
   try {
-    const response = await fetch(url)
-    const blob = await response.blob()
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      res.send({ dataUrl: reader.result })
-    }
-    reader.readAsDataURL(blob)
+    const dataUrl = await getOrCacheFavicon(url, favicon)
+    res.send({ dataUrl })
   }
   catch {
     res.send({ dataUrl: null })

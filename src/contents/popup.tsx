@@ -13,6 +13,7 @@ import Search from 'react:/assets/search.svg'
 import { useSearchEngine } from '~hooks/useSearchEngine'
 
 import { useTheme } from '~hooks/useTheme'
+import { DEFAULT_OPTIONS, useUserOptions } from '~store/options'
 import { Key } from '../key'
 import FaviconImg from './components/faviconImg'
 import SearchInput from './components/searchInput'
@@ -60,6 +61,8 @@ function Popup() {
   const { getSearchItem, getSearchUrl } = useSearchEngine()
   // 切换主题
   const [theme] = useTheme()
+  // 用户配置
+  const [userOptions] = useUserOptions()
 
   useEffect(() => {
     if (open) {
@@ -244,14 +247,14 @@ function Popup() {
     description: '直接使用搜索引擎搜索关键词',
   })
 
-  // Ctrl+P 快捷键处理
-  useHotkeys(`${Control}+p`, handleCtrlP, {
+  // 可配置的快捷键处理
+  useHotkeys(userOptions?.hotkey || DEFAULT_OPTIONS.hotkey, handleCtrlP, {
     document,
     enableOnFormTags: true,
     enableOnContentEditable: true,
     preventDefault: true,
     description: '打开搜索框继续按下则选择下一个，直到松开则打开结果，类似 vscode 的 cmd+p',
-  }, [open, list.length])
+  }, [open, list.length, userOptions?.hotkey])
 
   // 根据搜索结果类型获取图标
   const getResultIcon = (item: SearchResult) => {
@@ -300,7 +303,7 @@ function Popup() {
               onMouseDown={() => setIsKeyboardNav(false)}
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
-                <FaviconImg favicon={item.favicon} url={item.url} />
+                <FaviconImg favicon={item.faviconDataUrl || item.favicon} url={item.url} />
                 <div className="truncate flex-1 text-base font-medium text-zinc-900 dark:text-zinc-100">{item.title}</div>
               </div>
               <div className="flex items-center gap-1 text-xs text-zinc-400 select-none">
