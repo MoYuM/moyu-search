@@ -141,14 +141,19 @@ function Popup() {
     setActiveIndex(prev => (prev + 1) % list.length)
   }
 
-  const getRecentTabs = async () => {
-    const { results } = await sendToBackground({ name: 'get-recent-tabs' })
-    setList(results)
+  const loadRecentTabs = async () => {
+    try {
+      const { results } = await sendToBackground({ name: 'get-recent-tabs' })
+      setList(results)
+    } catch (error) {
+      console.error('Failed to load recent tabs:', error)
+      setList([])
+    }
   }
 
   const handleOpen = async () => {
     setOpen(true)
-    getRecentTabs()
+    loadRecentTabs()
     loadAllData()
   }
 
@@ -182,7 +187,7 @@ function Popup() {
       handleSearch(value)
     }
     else {
-      getRecentTabs()
+      loadRecentTabs()
     }
   }
   const handleOpenResult = (item?: SearchResult) => {
