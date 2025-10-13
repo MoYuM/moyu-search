@@ -39,6 +39,14 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) 
     onKeyUp?.(e)
   }
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const key = e.key.toLowerCase()
+
+    if (NORMAL_KEYS.includes(key)) {
+      e.stopPropagation()
+    }
+  }
+
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault()
     e.stopPropagation()
@@ -76,6 +84,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) 
         onCompositionUpdate={handleCompositionUpdate}
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
+        onKeyPress={handleKeyPress}
         placeholder={t('searchPlaceholder')}
         autoFocus={false}
       />
