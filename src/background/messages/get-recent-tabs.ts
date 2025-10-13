@@ -1,14 +1,9 @@
 import type { PlasmoMessaging } from '@plasmohq/messaging'
 import type { SearchResult } from '../../type'
-import Fuse from 'fuse.js'
-import { addPinyinSupport } from '../../utils/pinyin'
 
 export type RequestBody = undefined
-
 export interface ResponseBody {
   results: SearchResult[]
-  fuseIndex?: any // 预生成的 Fuse.js 索引
-  fromCache: boolean
 }
 
 const handler: PlasmoMessaging.MessageHandler<
@@ -16,47 +11,38 @@ const handler: PlasmoMessaging.MessageHandler<
   ResponseBody
 > = async (_, res) => {
   try {
-    const allTabs = await chrome.tabs.query({ currentWindow: true })
+    const allTabs = await chrome.tabs.query({
+        status: 'complete',
+        currentWindow: true,
+    })
+      
+    const recentTabs = allTabs
+      .filter(tab => tab.id && tab.url && !tab.url.startsWith('chrome://'))
+      .sort((a: any, b: any) => b.lastAccessed - a.lastAccessed)
+      .slice(0, 6)
+      .map(tab => ({
+        id: tab.id!.toString(),
+        title: tab.title || '',
+        url: tab.url!,
+        favicon: tab.favIconUrl,
+      }))
 
-    // 处理tabs数据
-    const tabResults = allTabs.map(tab => ({
+    const tabResults: SearchResult[] = recentTabs.map(tab => ({
       type: 'tab',
-      id: tab.id?.toString() || '',
-      title: tab.title || '',
-      url: tab.url || '',
-      favicon: tab.favIconUrl,
-      lastAccessed: (tab as any).lastAccessed,
+      id: tab.id,
+      title: tab.title,
+      url: tab.url,
+      favicon: tab.favicon,
+      lastAccessed: Date.now(),
     }))
-      .sort((a, b) => b.lastAccessed - a.lastAccessed)
-
-    // 添加拼音支持
-    const resultsWithPinyin = addPinyinSupport(tabResults as SearchResult[])
-
-    // 预生成 Fuse.js 索引以加速搜索
-    const fuseOptions = {
-      includeScore: true,
-      threshold: 0.3,
-      keys: [
-        'title',
-        'url',
-        'titlePinyin',
-        'titlePinyinInitials',
-      ],
-    }
-
-    const fuseIndex = Fuse.createIndex(fuseOptions.keys, resultsWithPinyin)
 
     res.send({
-      results: resultsWithPinyin,
-      fuseIndex: fuseIndex.toJSON(),
-      fromCache: false,
+      results: tabResults,
     })
-  }
-  catch (error) {
-    console.error('Error in get-all handler:', error)
+  } catch (error) {
+    console.error('Error in get-recent-tabs handler:', error)
     res.send({
       results: [],
-      fromCache: false,
     })
   }
 }
