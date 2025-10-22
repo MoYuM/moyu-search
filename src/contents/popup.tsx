@@ -1,6 +1,7 @@
 import type { IFuseOptions } from 'fuse.js'
 import type { BangShortcut, SearchResult } from '../type'
-import { sendToBackground } from '@plasmohq/messaging'
+import { safeSendToBackground } from '~utils/safeSendToBackground'
+import type { ExtensionMessage } from '~types/extension'
 import clsx from 'clsx'
 import cssText from 'data-text:~style.css'
 import Fuse from 'fuse.js'
@@ -41,6 +42,7 @@ const fuseOptions: IFuseOptions<SearchResult> = {
 export function getStyle() {
   const style = document.createElement('style')
   style.textContent = cssText
+  style.setAttribute('data-moyu-search-style', 'true')
   return style
 }
 
@@ -126,9 +128,12 @@ function Popup() {
     const searchUrl = bangMode
       ? getBangSearchUrl(bangMode, searchQuery)
       : getSearchUrl(searchQuery)
-    sendToBackground({
+    const message: ExtensionMessage = {
       name: 'new-tab',
       body: { url: searchUrl },
+    }
+    safeSendToBackground(message, { retry: true }).catch(error => {
+      console.error('Failed to open new tab:', error)
     })
     handleClose()
   }
@@ -145,7 +150,8 @@ function Popup() {
 
   const loadRecentTabs = async () => {
     try {
-      const { results } = await sendToBackground({ name: 'get-recent-tabs' })
+      const message: ExtensionMessage = { name: 'get-recent-tabs' }
+      const { results } = await safeSendToBackground<{ results: SearchResult[] }>(message, { retry: true })
       setList(results)
     }
     catch (error) {
@@ -171,17 +177,27 @@ function Popup() {
 
   // 新增：加载所有数据并初始化搜索
   const loadAllData = async () => {
-    const { results, fuseIndex } = await sendToBackground({
-      name: 'get-all',
-      body: { forceRefresh: false },
-    })
+    try {
+      const message: ExtensionMessage = {
+        name: 'get-all',
+        body: { forceRefresh: false },
+      }
+      const { results, fuseIndex } = await safeSendToBackground<{
+        results: SearchResult[]
+        fuseIndex: any
+      }>(message, { retry: true })
 
-    if (fuseIndex) {
-      const parsedIndex = Fuse.parseIndex(fuseIndex)
-      fuseRef.current = new Fuse<SearchResult>(results, fuseOptions, parsedIndex)
-    }
-    else {
-      fuseRef.current = new Fuse<SearchResult>(results, fuseOptions)
+      if (fuseIndex) {
+        const parsedIndex = Fuse.parseIndex(fuseIndex)
+        fuseRef.current = new Fuse<SearchResult>(results, fuseOptions, parsedIndex)
+      }
+      else {
+        fuseRef.current = new Fuse<SearchResult>(results, fuseOptions)
+      }
+    } catch (error) {
+      console.error('Failed to load all data:', error)
+      // 如果加载失败，至少加载最近的标签页
+      loadRecentTabs()
     }
   }
 
@@ -200,15 +216,21 @@ function Popup() {
     // 如果处于 bang 模式且没有选中特定结果，使用 bang 搜索
     if (bangMode && !item && searchQuery.trim()) {
       const searchUrl = getBangSearchUrl(bangMode, searchQuery)
-      sendToBackground({
+      const message: ExtensionMessage = {
         name: 'new-tab',
         body: { url: searchUrl },
+      }
+      safeSendToBackground(message, { retry: true }).catch(error => {
+        console.error('Failed to open new tab:', error)
       })
     }
     else {
-      sendToBackground({
+      const message: ExtensionMessage = {
         name: 'open-result',
         body: res,
+      }
+      safeSendToBackground(message, { retry: true }).catch(error => {
+        console.error('Failed to open result:', error)
       })
     }
     handleClose()
@@ -289,6 +311,7 @@ function Popup() {
       className={`fixed left-0 top-0 w-screen h-screen z-[9999] ${theme}`}
       style={{ display: open ? 'block' : 'none' }}
       onClick={handleClose}
+      data-moyu-search-popup
     >
       <div
         className={`

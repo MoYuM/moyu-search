@@ -61,7 +61,8 @@
     "permissions": [
       "tabs",
       "history",
-      "bookmarks"
+      "bookmarks",
+      "scripting"
     ]
   }
 }

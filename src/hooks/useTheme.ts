@@ -7,7 +7,7 @@ import { useUserOptions } from '~store/options'
  */
 export function useTheme() {
   const { theme } = useAhooksTheme()
-  const [userOptions] = useUserOptions()
+  const userOptions = useUserOptions()
 
   const getTheme = () => {
     if (!userOptions?.appearance) {

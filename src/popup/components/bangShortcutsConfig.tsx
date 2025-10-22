@@ -161,7 +161,7 @@ function BangShortcutsConfig({ className }: BangShortcutsConfigProps) {
         onOk={handleModalOk}
         onCancel={handleModalCancel}
         width={400}
-        destroyOnClose
+        destroyOnHidden
       >
         <Form
           form={form}
