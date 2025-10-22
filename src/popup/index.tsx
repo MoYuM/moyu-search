@@ -5,6 +5,7 @@ import { useTheme } from '~hooks/useTheme'
 import { getUserOptions, setUserOptions } from '~store/options'
 import { t } from '~utils/i18n'
 import { version } from '../../package.json'
+import BangShortcutsConfig from './components/bangShortcutsConfig'
 import HotkeyInput from './components/hotkeyInput'
 import './index.css'
 
@@ -64,7 +65,7 @@ function IndexPopup() {
 
   return (
     <ConfigProvider theme={{ algorithm: algorithmMap[theme] }}>
-      <Layout className="w-[300px] h-[450px] p-4">
+      <Layout className="w-[300px] min-h-[450px] max-h-[600px] p-4 overflow-y-auto">
         <div className="flex justify-between items-center">
           <Title level={5}>{t('settings')}</Title>
           <div className="text-sm text-gray-500">
@@ -106,6 +107,8 @@ function IndexPopup() {
             />
           </Form.Item>
         </Form>
+        <Divider size="small" />
+        <BangShortcutsConfig />
       </Layout>
     </ConfigProvider>
   )

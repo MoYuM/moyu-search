@@ -11,3 +11,9 @@ export interface SearchResult {
   titlePinyin?: string
   titlePinyinInitials?: string
 }
+
+export interface BangShortcut {
+  keyword: string
+  name: string
+  searchUrl: string
+}

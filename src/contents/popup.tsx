@@ -1,5 +1,5 @@
 import type { IFuseOptions } from 'fuse.js'
-import type { SearchResult } from '../type'
+import type { BangShortcut, SearchResult } from '../type'
 import { sendToBackground } from '@plasmohq/messaging'
 import clsx from 'clsx'
 import cssText from 'data-text:~style.css'
@@ -10,6 +10,7 @@ import Bookmark from 'react:/assets/bookmark.svg'
 import Box from 'react:/assets/box.svg'
 import Clock from 'react:/assets/clock.svg'
 import Search from 'react:/assets/search.svg'
+import { useBangShortcuts } from '~hooks/useBangShortcuts'
 import { useSearchEngine } from '~hooks/useSearchEngine'
 
 import { useTheme } from '~hooks/useTheme'
@@ -51,18 +52,17 @@ function Popup() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
   const [isKeyboardNav, setIsKeyboardNav] = useState(true)
+  const [bangMode, setBangMode] = useState<BangShortcut | null>(null)
 
   const inputRef = useRef<HTMLInputElement>(null)
   const isMoved = useRef(false)
   const itemRefs = useRef<(HTMLDivElement | null)[]>([])
   const fuseRef = useRef<Fuse<SearchResult> | null>(null)
 
-  // 搜索引擎配置
   const { getSearchItem, getSearchUrl } = useSearchEngine()
-  // 切换主题
+  const { getBangSearchUrl } = useBangShortcuts()
   const [theme] = useTheme()
-  // 用户配置
-  const [userOptions] = useUserOptions()
+  const userOptions = useUserOptions()
 
   useEffect(() => {
     if (open) {
@@ -123,7 +123,9 @@ function Popup() {
   // -------- handler --------
 
   const handleDirectSearch = () => {
-    const searchUrl = getSearchUrl(searchQuery)
+    const searchUrl = bangMode
+      ? getBangSearchUrl(bangMode, searchQuery)
+      : getSearchUrl(searchQuery)
     sendToBackground({
       name: 'new-tab',
       body: { url: searchUrl },
@@ -145,7 +147,8 @@ function Popup() {
     try {
       const { results } = await sendToBackground({ name: 'get-recent-tabs' })
       setList(results)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Failed to load recent tabs:', error)
       setList([])
     }
@@ -162,6 +165,7 @@ function Popup() {
     setSearchQuery('')
     setActiveIndex(0)
     setList([])
+    setBangMode(null)
     isMoved.current = false
   }
 
@@ -192,10 +196,21 @@ function Popup() {
   }
   const handleOpenResult = (item?: SearchResult) => {
     const res = item || list[activeIndex]
-    sendToBackground({
-      name: 'open-result',
-      body: res,
-    })
+
+    // 如果处于 bang 模式且没有选中特定结果，使用 bang 搜索
+    if (bangMode && !item && searchQuery.trim()) {
+      const searchUrl = getBangSearchUrl(bangMode, searchQuery)
+      sendToBackground({
+        name: 'new-tab',
+        body: { url: searchUrl },
+      })
+    }
+    else {
+      sendToBackground({
+        name: 'open-result',
+        body: res,
+      })
+    }
     handleClose()
   }
 
@@ -287,6 +302,8 @@ function Popup() {
           value={searchQuery}
           onChange={handleSearchQueryChange}
           onKeyUp={handleKeyUp}
+          bangMode={bangMode}
+          onBangModeChange={setBangMode}
         />
         <div className="flex flex-col gap-1 mt-2 overflow-y-auto rounded-xl max-h-96 min-h-12 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {list?.map((item, index) => (
