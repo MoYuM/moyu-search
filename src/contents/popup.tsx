@@ -237,18 +237,8 @@ function Popup() {
         console.error('Failed to open new tab:', error)
       })
     }
-    // 如果处于 bang 模式且没有选中特定结果，使用 bang 搜索
-    else if (bangMode && !item && searchQuery.trim()) {
-      const searchUrl = getBangSearchUrl(bangMode, searchQuery)
-      const message: ExtensionMessage = {
-        name: 'new-tab',
-        body: { url: searchUrl },
-      }
-      safeSendToBackground(message, { retry: true }).catch(error => {
-        console.error('Failed to open new tab:', error)
-      })
-    }
     else {
+      // 其他情况都按照原逻辑处理，直接跳转到对应的 tab
       const message: ExtensionMessage = {
         name: 'open-result',
         body: res,
