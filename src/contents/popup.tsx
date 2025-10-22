@@ -25,6 +25,7 @@ const IconMap: Record<SearchResult['type'], any> = {
   history: Clock,
   bookmark: Bookmark,
   search: Search,
+  'bang-search': Search,
 }
 
 const fuseOptions: IFuseOptions<SearchResult> = {
@@ -112,7 +113,19 @@ function Popup() {
       }
     }
 
-    const newList = [...tabs, ...others]
+    let newList = [...tabs, ...others]
+
+    // 如果处于 bang mode，在列表开头添加 bang 搜索项
+    if (bangMode && keyword.trim()) {
+      const bangSearchItem: SearchResult = {
+        type: 'bang-search',
+        id: `bang-search-${bangMode.keyword}`,
+        title: `使用 ${bangMode.name} 进行搜索`,
+        url: getBangSearchUrl(bangMode, keyword),
+        bangMode: bangMode
+      }
+      newList = [bangSearchItem, ...newList]
+    }
 
     if (newList.length === 0 && keyword.trim()) {
       const searchItem = getSearchItem(keyword)
@@ -213,8 +226,19 @@ function Popup() {
   const handleOpenResult = (item?: SearchResult) => {
     const res = item || list[activeIndex]
 
+    // 如果选中的是 bang 搜索项，直接使用 bang 搜索
+    if (res.type === 'bang-search' && res.bangMode) {
+      const searchUrl = getBangSearchUrl(res.bangMode, searchQuery)
+      const message: ExtensionMessage = {
+        name: 'new-tab',
+        body: { url: searchUrl },
+      }
+      safeSendToBackground(message, { retry: true }).catch(error => {
+        console.error('Failed to open new tab:', error)
+      })
+    }
     // 如果处于 bang 模式且没有选中特定结果，使用 bang 搜索
-    if (bangMode && !item && searchQuery.trim()) {
+    else if (bangMode && !item && searchQuery.trim()) {
       const searchUrl = getBangSearchUrl(bangMode, searchQuery)
       const message: ExtensionMessage = {
         name: 'new-tab',

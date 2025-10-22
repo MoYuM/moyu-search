@@ -1,5 +1,5 @@
 export interface SearchResult {
-  type: 'tab' | 'history' | 'bookmark' | 'search'
+  type: 'tab' | 'history' | 'bookmark' | 'search' | 'bang-search'
   id: string
   title: string
   url: string
@@ -10,6 +10,7 @@ export interface SearchResult {
   faviconDataUrl?: string
   titlePinyin?: string
   titlePinyinInitials?: string
+  bangMode?: BangShortcut
 }
 
 export interface BangShortcut {
