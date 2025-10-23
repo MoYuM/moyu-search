@@ -92,9 +92,9 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) 
   const searchEngineName = SEARCH_ENGINE_OPTIONS.find(item => item.value === userOptions?.searchEngine)?.label
 
   return (
-    <div className="flex items-center gap-1 w-full px-3">
+    <div className="flex items-center gap-3 w-full px-2">
       {bangMode && (
-        <div className="rounded-full px-3 py-1 bg-blue-500 text-white text-sm font-medium">
+        <div className="rounded-2xl bg-cyan-500 px-3 py-2 text-sm font-semibold text-white shadow-xl shadow-cyan-500/50">
           {bangMode.name}
         </div>
       )}

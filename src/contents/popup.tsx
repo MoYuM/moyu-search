@@ -1,7 +1,6 @@
 import type { IFuseOptions } from 'fuse.js'
-import type { BangShortcut, SearchResult } from '../type'
-import { safeSendToBackground } from '~utils/safeSendToBackground'
 import type { ExtensionMessage } from '~types/extension'
+import type { BangShortcut, SearchResult } from '../type'
 import clsx from 'clsx'
 import cssText from 'data-text:~style.css'
 import Fuse from 'fuse.js'
@@ -13,18 +12,19 @@ import Clock from 'react:/assets/clock.svg'
 import Search from 'react:/assets/search.svg'
 import { useBangShortcuts } from '~hooks/useBangShortcuts'
 import { useSearchEngine } from '~hooks/useSearchEngine'
-
 import { useTheme } from '~hooks/useTheme'
+
 import { DEFAULT_OPTIONS, useUserOptions } from '~store/options'
+import { safeSendToBackground } from '~utils/safeSendToBackground'
 import { Key } from '../key'
 import FaviconImg from './components/faviconImg'
 import SearchInput from './components/searchInput'
 
 const IconMap: Record<SearchResult['type'], any> = {
-  tab: Box,
-  history: Clock,
-  bookmark: Bookmark,
-  search: Search,
+  'tab': Box,
+  'history': Clock,
+  'bookmark': Bookmark,
+  'search': Search,
   'bang-search': Search,
 }
 
@@ -122,7 +122,7 @@ function Popup() {
         id: `bang-search-${bangMode.keyword}`,
         title: `使用 ${bangMode.name} 进行搜索`,
         url: getBangSearchUrl(bangMode, keyword),
-        bangMode: bangMode
+        bangMode,
       }
       newList = [bangSearchItem, ...newList]
     }
@@ -145,7 +145,7 @@ function Popup() {
       name: 'new-tab',
       body: { url: searchUrl },
     }
-    safeSendToBackground(message, { retry: true }).catch(error => {
+    safeSendToBackground(message, { retry: true }).catch((error) => {
       console.error('Failed to open new tab:', error)
     })
     handleClose()
@@ -207,7 +207,8 @@ function Popup() {
       else {
         fuseRef.current = new Fuse<SearchResult>(results, fuseOptions)
       }
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Failed to load all data:', error)
       // 如果加载失败，至少加载最近的标签页
       loadRecentTabs()
@@ -233,7 +234,7 @@ function Popup() {
         name: 'new-tab',
         body: { url: searchUrl },
       }
-      safeSendToBackground(message, { retry: true }).catch(error => {
+      safeSendToBackground(message, { retry: true }).catch((error) => {
         console.error('Failed to open new tab:', error)
       })
     }
@@ -243,7 +244,7 @@ function Popup() {
         name: 'open-result',
         body: res,
       }
-      safeSendToBackground(message, { retry: true }).catch(error => {
+      safeSendToBackground(message, { retry: true }).catch((error) => {
         console.error('Failed to open result:', error)
       })
     }
@@ -329,7 +330,7 @@ function Popup() {
     >
       <div
         className={`
-          absolute left-1/2 top-1/4 -translate-x-1/2 w-[700px] p-2 flex flex-col gap-2 rounded-2xl shadow-2xl ${open ? 'block' : 'hidden'}
+          absolute left-1/2 top-1/4 -translate-x-1/2 w-[700px] p-2 flex flex-col gap-2 rounded-3xl shadow-2xl ${open ? 'block' : 'hidden'}
           bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700
         `}
         onClick={e => e.stopPropagation()}
