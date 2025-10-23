@@ -138,5 +138,21 @@
   "success": {
     "message": "Success",
     "description": "操作成功提示"
+  },
+  "basicConfig": {
+    "message": "Basic Configuration",
+    "description": "基础配置标题"
+  },
+  "bangMode": {
+    "message": "Bang Mode",
+    "description": "Bang 模式标题"
+  },
+  "bangModeTooltipLine1": {
+    "message": "Type 'bang keyword' in the search box and press Tab to enter bang mode",
+    "description": "Bang 模式提示第一行"
+  },
+  "bangModeTooltipLine2": {
+    "message": "Then you can search directly on the corresponding site",
+    "description": "Bang 模式提示第二行"
   }
 }

@@ -82,7 +82,7 @@ function IndexPopup() {
           onValuesChange={handleFormChange}
         >
           <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-            基础配置
+            {t('basicConfig')}
           </div>
           <Form.Item label={t('searchEngine')} name="searchEngine" className="w-full">
             <Select
@@ -111,15 +111,15 @@ function IndexPopup() {
 
           <div className="flex items-center gap-2 mb-3">
             <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Bang Mode
+              {t('bangMode')}
             </div>
             <Tooltip
               title={(
                 <div>
                   <div className="mb-2">
-                    在搜索框中输入 'bang关键词' 之后按下 Tab 键即可进入 bang mode
+                    {t('bangModeTooltipLine1')}
                   </div>
-                  <div>之后再进行搜索即可直接进入对应站点的搜索</div>
+                  <div>{t('bangModeTooltipLine2')}</div>
                 </div>
               )}
             >
