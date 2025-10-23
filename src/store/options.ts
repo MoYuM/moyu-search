@@ -1,36 +1,32 @@
-import type { BangShortcut } from '~type'
+import type { BangConfig } from '~type'
 import { Storage } from '@plasmohq/storage'
 import { useStorage } from '@plasmohq/storage/hook'
+import { merge } from 'lodash-es'
+import { useMemo } from 'react'
 
 export const userOptionStorage = new Storage()
 
 export const STORAGE_KEY = 'userOptions'
 
 /**
- * 默认 Bang 快捷方式配置
+ * 默认 Bang 配置 - 与表单字段一一对应
  */
-export const DEFAULT_BANG_SHORTCUTS: BangShortcut[] = [
-  {
-    keyword: 'v2ex',
-    name: 'V2EX',
-    searchUrl: 'https://www.google.com/search?q=site:v2ex.com+{query}',
-  },
-  {
-    keyword: 'reddit',
-    name: 'Reddit',
-    searchUrl: 'https://www.reddit.com/search/?q={query}',
-  },
-  {
-    keyword: 'wiki',
-    name: 'Wikipedia',
-    searchUrl: 'https://en.wikipedia.org/w/index.php?search={query}',
-  },
-  {
-    keyword: 'chatgpt',
-    name: 'ChatGPT',
-    searchUrl: 'https://chatgpt.com/?q={query}',
-  },
-]
+export const DEFAULT_BANG_CONFIG: BangConfig = {
+  V2EX: 'v2ex',
+  Reddit: 'reddit',
+  Wikipedia: 'wiki',
+  ChatGPT: 'chatgpt',
+}
+
+/**
+ * 默认 Bang 搜索 URL 配置
+ */
+export const DEFAULT_BANG_SEARCH_URLS: BangConfig = {
+  V2EX: 'https://www.google.com/search?q=site:v2ex.com+{query}',
+  Reddit: 'https://www.reddit.com/search/?q={query}',
+  Wikipedia: 'https://en.wikipedia.org/w/index.php?search={query}',
+  ChatGPT: 'https://chatgpt.com/?q={query}',
+}
 
 /**
  * 默认配置
@@ -39,7 +35,7 @@ export const DEFAULT_OPTIONS: UserOptions = {
   searchEngine: 'google',
   appearance: 'system',
   hotkey: 'ctrl+p',
-  bangShortcuts: DEFAULT_BANG_SHORTCUTS,
+  bangConfig: DEFAULT_BANG_CONFIG,
 }
 
 export interface UserOptions {
@@ -49,8 +45,8 @@ export interface UserOptions {
   appearance: 'light' | 'dark' | 'system'
   /** 触发弹窗的快捷键 */
   hotkey: string
-  /** Bang 快捷方式 */
-  bangShortcuts: BangShortcut[]
+  /** Bang 配置 - 与表单字段一一对应 */
+  bangConfig: BangConfig
 }
 
 export async function getUserOptions() {
@@ -67,9 +63,8 @@ export function useUserOptions() {
     key: STORAGE_KEY,
     instance: userOptionStorage,
   })
-  const mergedOptions: UserOptions = {
-    ...DEFAULT_OPTIONS,
-    ...options,
-  }
-  return mergedOptions
+
+  return useMemo(() => {
+    return merge({}, DEFAULT_OPTIONS, options)
+  }, [options])
 }

@@ -1,7 +1,7 @@
-import type { BangShortcut } from '~type'
+import type { BangName, BangShortcut } from '~type'
 import { forwardRef } from 'react'
 import { NORMAL_KEYS, SEARCH_ENGINE_OPTIONS } from '~const'
-import { useUserOptions } from '~store/options'
+import { DEFAULT_BANG_SEARCH_URLS, useUserOptions } from '~store/options'
 import { t } from '~utils/i18n'
 import { Key } from '../../key'
 import HotkeyIcon from './hotkeyIcon'
@@ -36,9 +36,19 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) 
     // 处理 Tab 键触发 bang 模式
     if (e.key === 'Tab' && !bangMode && value.trim()) {
       e.preventDefault()
-      const bangShortcuts = userOptions?.bangShortcuts || []
-      const matchedBang = bangShortcuts.find(bang => bang.keyword === value.trim())
-      if (matchedBang) {
+      const bangConfig = userOptions?.bangConfig || {}
+
+      // 查找匹配的关键词
+      const matchedBangName = Object.keys(bangConfig).find(bangName =>
+        bangConfig[bangName as BangName] === value.trim(),
+      ) as BangName | undefined
+
+      if (matchedBangName) {
+        const matchedBang = {
+          keyword: bangConfig[matchedBangName],
+          name: matchedBangName,
+          searchUrl: DEFAULT_BANG_SEARCH_URLS[matchedBangName] || '',
+        }
         onChange('')
         onBangModeChange?.(matchedBang)
         return

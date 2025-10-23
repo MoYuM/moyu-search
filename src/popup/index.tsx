@@ -1,11 +1,12 @@
-import { ConfigProvider, Divider, Form, Layout, message, Select, theme, Typography } from 'antd'
+import type { UserOptions } from '~store/options'
+import { QuestionCircleOutlined } from '@ant-design/icons'
+import { ConfigProvider, Divider, Form, Input, Layout, message, Select, theme, Tooltip, Typography } from 'antd'
 import { useEffect } from 'react'
 import { APPEARANCE_OPTIONS, SEARCH_ENGINE_OPTIONS } from '~const'
 import { useTheme } from '~hooks/useTheme'
-import { getUserOptions, setUserOptions } from '~store/options'
+import { setUserOptions, useUserOptions } from '~store/options'
 import { t } from '~utils/i18n'
 import { version } from '../../package.json'
-import BangShortcutsConfig from './components/bangShortcutsConfig'
 import HotkeyInput from './components/hotkeyInput'
 import './index.css'
 
@@ -40,17 +41,15 @@ function validateHotkey(val: string) {
 function IndexPopup() {
   const [form] = Form.useForm()
   const [theme] = useTheme()
+  const userOptions = useUserOptions()
 
   useEffect(() => {
-    init()
-  }, [])
+    if (userOptions && form) {
+      form.setFieldsValue(userOptions)
+    }
+  }, [userOptions, form])
 
-  const init = async () => {
-    const userOptions = await getUserOptions()
-    form.setFieldsValue(userOptions)
-  }
-
-  const handleFormChange = (changedValues: any, allValues: any) => {
+  const handleFormChange = (changedValues: any, allValues: UserOptions) => {
     if (changedValues.hotkey) {
       validateHotkey(changedValues.hotkey).then(() => {
         setUserOptions(allValues)
@@ -82,6 +81,9 @@ function IndexPopup() {
           wrapperCol={{ span: 14 }}
           onValuesChange={handleFormChange}
         >
+          <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            基础配置
+          </div>
           <Form.Item label={t('searchEngine')} name="searchEngine" className="w-full">
             <Select
               options={SEARCH_ENGINE_OPTIONS}
@@ -102,13 +104,41 @@ function IndexPopup() {
               validator: (_, val: string) => validateHotkey(val),
             }]}
           >
-            <HotkeyInput
-              placeholder={t('clickToRecordHotkey')}
-            />
+            <HotkeyInput placeholder={t('clickToRecordHotkey')} />
           </Form.Item>
+
+          <Divider size="small" />
+
+          <div className="flex items-center gap-2 mb-3">
+            <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Bang Mode
+            </div>
+            <Tooltip
+              title={(
+                <div>
+                  <div className="mb-2">
+                    在搜索框中输入 'bang关键词' 之后按下 Tab 键即可进入 bang mode
+                  </div>
+                  <div>之后再进行搜索即可直接进入对应站点的搜索</div>
+                </div>
+              )}
+            >
+              <QuestionCircleOutlined className="text-gray-400" />
+            </Tooltip>
+          </div>
+          {Object.keys(userOptions?.bangConfig || {}).map(bangName => (
+            <Form.Item
+              key={bangName}
+              label={bangName}
+              name={['bangConfig', bangName]}
+              className="w-full"
+            >
+              <Input
+                placeholder={t('bangKeywordPlaceholder')}
+              />
+            </Form.Item>
+          ))}
         </Form>
-        <Divider size="small" />
-        <BangShortcutsConfig />
       </Layout>
     </ConfigProvider>
   )

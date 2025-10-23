@@ -18,3 +18,7 @@ export interface BangShortcut {
   name: string
   searchUrl: string
 }
+
+// Bang 名称类型
+export type BangName = 'V2EX' | 'Reddit' | 'Wikipedia' | 'ChatGPT'
+export type BangConfig = Record<BangName, string>
