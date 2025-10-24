@@ -154,5 +154,13 @@
   "bangModeTooltipLine2": {
     "message": "Then you can search directly on the corresponding site",
     "description": "Bang 模式提示第二行"
+  },
+  "feedback": {
+    "message": "Feedback",
+    "description": "反馈按钮文本"
+  },
+  "feedbackDescription": {
+    "message": "Found a bug or have suggestions?",
+    "description": "反馈描述文本"
   }
 }

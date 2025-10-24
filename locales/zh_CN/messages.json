@@ -162,5 +162,13 @@
   "bangModeTooltipLine2": {
     "message": "之后再进行搜索即可直接进入对应站点的搜索",
     "description": "Bang 模式提示第二行"
+  },
+  "feedback": {
+    "message": "反馈",
+    "description": "反馈按钮文本"
+  },
+  "feedbackDescription": {
+    "message": "遇到问题或有建议？",
+    "description": "反馈描述文本"
   }
 }

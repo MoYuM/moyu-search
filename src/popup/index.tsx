@@ -1,6 +1,6 @@
 import type { UserOptions } from '~store/options'
-import { QuestionCircleOutlined } from '@ant-design/icons'
-import { ConfigProvider, Divider, Form, Input, Layout, message, Select, theme, Tooltip, Typography } from 'antd'
+import { GithubFilled, QuestionCircleOutlined } from '@ant-design/icons'
+import { Button, ConfigProvider, Divider, Form, Input, Layout, message, Select, theme, Tooltip, Typography } from 'antd'
 import { useEffect } from 'react'
 import { APPEARANCE_OPTIONS, SEARCH_ENGINE_OPTIONS } from '~const'
 import { useTheme } from '~hooks/useTheme'
@@ -139,6 +139,25 @@ function IndexPopup() {
             </Form.Item>
           ))}
         </Form>
+
+        <Divider size="small" />
+
+        <div className="mt-2">
+          <div className="text-center text-xs text-gray-500">
+            <span>{t('feedbackDescription')}</span>
+            <Button
+              icon={<GithubFilled />}
+              size="small"
+              type="link"
+              href="https://github.com/MoYuM/moyu-search/issues/new"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs"
+            >
+              {t('feedback')}
+            </Button>
+          </div>
+        </div>
       </Layout>
     </ConfigProvider>
   )
