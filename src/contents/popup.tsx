@@ -330,7 +330,7 @@ function Popup() {
     >
       <div
         className={`
-          absolute left-1/2 top-1/4 -translate-x-1/2 w-[700px] p-2 flex flex-col gap-2 rounded-3xl shadow-2xl ${open ? 'block' : 'hidden'}
+          absolute left-1/2 top-1/4 -translate-x-1/2 w-[700px] p-2 flex flex-col rounded-3xl shadow-2xl ${open ? 'block' : 'hidden'}
           bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700
         `}
         onClick={e => e.stopPropagation()}
