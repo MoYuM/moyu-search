@@ -1,8 +1,10 @@
-import { ConfigProvider, Divider, Form, Layout, message, Select, theme, Typography } from 'antd'
+import type { UserOptions } from '~store/options'
+import { GithubFilled, QuestionCircleOutlined } from '@ant-design/icons'
+import { Button, ConfigProvider, Divider, Form, Input, Layout, message, Select, theme, Tooltip, Typography } from 'antd'
 import { useEffect } from 'react'
 import { APPEARANCE_OPTIONS, SEARCH_ENGINE_OPTIONS } from '~const'
 import { useTheme } from '~hooks/useTheme'
-import { getUserOptions, setUserOptions } from '~store/options'
+import { setUserOptions, useUserOptions } from '~store/options'
 import { t } from '~utils/i18n'
 import { version } from '../../package.json'
 import HotkeyInput from './components/hotkeyInput'
@@ -39,17 +41,15 @@ function validateHotkey(val: string) {
 function IndexPopup() {
   const [form] = Form.useForm()
   const [theme] = useTheme()
+  const userOptions = useUserOptions()
 
   useEffect(() => {
-    init()
-  }, [])
+    if (userOptions && form) {
+      form.setFieldsValue(userOptions)
+    }
+  }, [userOptions, form])
 
-  const init = async () => {
-    const userOptions = await getUserOptions()
-    form.setFieldsValue(userOptions)
-  }
-
-  const handleFormChange = (changedValues: any, allValues: any) => {
+  const handleFormChange = (changedValues: any, allValues: UserOptions) => {
     if (changedValues.hotkey) {
       validateHotkey(changedValues.hotkey).then(() => {
         setUserOptions(allValues)
@@ -64,7 +64,7 @@ function IndexPopup() {
 
   return (
     <ConfigProvider theme={{ algorithm: algorithmMap[theme] }}>
-      <Layout className="w-[300px] h-[450px] p-4">
+      <Layout className="w-[300px] min-h-[450px] max-h-[600px] p-4 overflow-y-auto">
         <div className="flex justify-between items-center">
           <Title level={5}>{t('settings')}</Title>
           <div className="text-sm text-gray-500">
@@ -81,6 +81,9 @@ function IndexPopup() {
           wrapperCol={{ span: 14 }}
           onValuesChange={handleFormChange}
         >
+          <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            {t('basicConfig')}
+          </div>
           <Form.Item label={t('searchEngine')} name="searchEngine" className="w-full">
             <Select
               options={SEARCH_ENGINE_OPTIONS}
@@ -101,11 +104,60 @@ function IndexPopup() {
               validator: (_, val: string) => validateHotkey(val),
             }]}
           >
-            <HotkeyInput
-              placeholder={t('clickToRecordHotkey')}
-            />
+            <HotkeyInput placeholder={t('clickToRecordHotkey')} />
           </Form.Item>
+
+          <Divider size="small" />
+
+          <div className="flex items-center gap-2 mb-3">
+            <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              {t('bangMode')}
+            </div>
+            <Tooltip
+              title={(
+                <div>
+                  <div className="mb-2">
+                    {t('bangModeTooltipLine1')}
+                  </div>
+                  <div>{t('bangModeTooltipLine2')}</div>
+                </div>
+              )}
+            >
+              <QuestionCircleOutlined className="text-gray-400" />
+            </Tooltip>
+          </div>
+          {Object.keys(userOptions?.bangConfig || {}).map(bangName => (
+            <Form.Item
+              key={bangName}
+              label={bangName}
+              name={['bangConfig', bangName]}
+              className="w-full"
+            >
+              <Input
+                placeholder={t('bangKeywordPlaceholder')}
+              />
+            </Form.Item>
+          ))}
         </Form>
+
+        <Divider size="small" />
+
+        <div className="mt-2">
+          <div className="text-center text-xs text-gray-500">
+            <span>{t('feedbackDescription')}</span>
+            <Button
+              icon={<GithubFilled />}
+              size="small"
+              type="link"
+              href="https://github.com/MoYuM/moyu-search/issues/new"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs"
+            >
+              {t('feedback')}
+            </Button>
+          </div>
+        </div>
       </Layout>
     </ConfigProvider>
   )
