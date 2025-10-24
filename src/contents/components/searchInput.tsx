@@ -1,6 +1,7 @@
+import type { BangName, BangShortcut } from '~type'
 import { forwardRef } from 'react'
 import { NORMAL_KEYS, SEARCH_ENGINE_OPTIONS } from '~const'
-import { useUserOptions } from '~store/options'
+import { DEFAULT_BANG_SEARCH_URLS, useUserOptions } from '~store/options'
 import { t } from '~utils/i18n'
 import { Key } from '../../key'
 import HotkeyIcon from './hotkeyIcon'
@@ -9,12 +10,14 @@ interface SearchInputProps {
   value: string
   onChange: (value: string) => void
   onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void
+  bangMode?: BangShortcut | null
+  onBangModeChange?: (bang: BangShortcut | null) => void
 }
 
 const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) => {
-  const { value, onChange, onKeyUp } = props
+  const { value, onChange, onKeyUp, bangMode, onBangModeChange } = props
 
-  const [userOptions] = useUserOptions()
+  const userOptions = useUserOptions()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // 允许通过 onChange 更新值，但阻止事件冒泡
@@ -27,6 +30,35 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) 
 
     // 不要阻止 ctrl+p 事件冒泡
     if (e.ctrlKey && e.key.toLowerCase() === 'p') {
+      return
+    }
+
+    // 处理 Tab 键触发 bang 模式
+    if (e.key === 'Tab' && !bangMode && value.trim()) {
+      e.preventDefault()
+      const bangConfig = userOptions?.bangConfig || {}
+
+      // 查找匹配的关键词
+      const matchedBangName = Object.keys(bangConfig).find(bangName =>
+        bangConfig[bangName as BangName] === value.trim(),
+      ) as BangName | undefined
+
+      if (matchedBangName) {
+        const matchedBang = {
+          keyword: bangConfig[matchedBangName],
+          name: matchedBangName,
+          searchUrl: DEFAULT_BANG_SEARCH_URLS[matchedBangName] || '',
+        }
+        onChange('')
+        onBangModeChange?.(matchedBang)
+        return
+      }
+    }
+
+    // 处理 Backspace 键退出 bang 模式
+    if (e.key === 'Backspace' && bangMode && value === '') {
+      e.preventDefault()
+      onBangModeChange?.(null)
       return
     }
 
@@ -70,7 +102,12 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) 
   const searchEngineName = SEARCH_ENGINE_OPTIONS.find(item => item.value === userOptions?.searchEngine)?.label
 
   return (
-    <div className="flex items-center gap-1 w-full px-3">
+    <div className="flex items-center gap-3 w-full px-2">
+      {bangMode && (
+        <div className="rounded-2xl bg-cyan-500 px-3 py-2 text-sm font-semibold text-white shadow-xl shadow-cyan-500/50">
+          {bangMode.name}
+        </div>
+      )}
       <input
         ref={ref}
         tabIndex={-1}
@@ -85,7 +122,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) 
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
         onKeyPress={handleKeyPress}
-        placeholder={t('searchPlaceholder')}
+        placeholder={bangMode ? t('bangSearchPlaceholder', { name: bangMode.name }) : t('searchPlaceholder')}
         autoFocus={false}
       />
       <div className="flex items-center text-gray-400 dark:text-gray-500 gap-2">

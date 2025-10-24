@@ -86,5 +86,93 @@
   "hotkeyErrorNoNormalKey": {
     "message": "至少有一个功能键",
     "description": "快捷键验证错误：缺少功能键"
+  },
+  "bangShortcuts": {
+    "message": "Bang 快捷方式",
+    "description": "Bang 快捷方式标题"
+  },
+  "bangKeyword": {
+    "message": "触发词",
+    "description": "Bang 触发词标签"
+  },
+  "bangName": {
+    "message": "名称",
+    "description": "Bang 名称标签"
+  },
+  "bangSearchUrl": {
+    "message": "搜索 URL",
+    "description": "Bang 搜索 URL 标签"
+  },
+  "bangAdd": {
+    "message": "添加快捷方式",
+    "description": "添加 Bang 快捷方式按钮"
+  },
+  "bangEdit": {
+    "message": "编辑",
+    "description": "编辑 Bang 快捷方式按钮"
+  },
+  "bangDelete": {
+    "message": "删除",
+    "description": "删除 Bang 快捷方式按钮"
+  },
+  "bangUrlPlaceholder": {
+    "message": "使用 {query} 作为搜索关键词占位符",
+    "description": "Bang URL 占位符提示"
+  },
+  "bangKeywordPlaceholder": {
+    "message": "例如: wiki, reddit",
+    "description": "Bang 关键词占位符提示"
+  },
+  "bangNamePlaceholder": {
+    "message": "例如: Wikipedia",
+    "description": "Bang 名称占位符提示"
+  },
+  "bangValidateKeywordEmpty": {
+    "message": "触发词不能为空",
+    "description": "Bang 验证错误：触发词为空"
+  },
+  "bangValidateKeywordDuplicate": {
+    "message": "触发词已存在",
+    "description": "Bang 验证错误：触发词重复"
+  },
+  "bangValidateUrlEmpty": {
+    "message": "搜索 URL 不能为空",
+    "description": "Bang 验证错误：URL 为空"
+  },
+  "bangValidateUrlNoPlaceholder": {
+    "message": "搜索 URL 必须包含 {query} 占位符",
+    "description": "Bang 验证错误：URL 缺少占位符"
+  },
+  "success": {
+    "message": "成功",
+    "description": "操作成功提示"
+  },
+  "basicConfig": {
+    "message": "基础配置",
+    "description": "基础配置标题"
+  },
+  "bangMode": {
+    "message": "Bang 模式",
+    "description": "Bang 模式标题"
+  },
+  "bangModeTooltipLine1": {
+    "message": "在搜索框中输入 'bang关键词' 之后按下 Tab 键即可进入 bang mode",
+    "description": "Bang 模式提示第一行"
+  },
+  "bangModeTooltipLine2": {
+    "message": "之后再进行搜索即可直接进入对应站点的搜索",
+    "description": "Bang 模式提示第二行"
+  },
+  "feedback": {
+    "message": "反馈",
+    "description": "反馈按钮文本"
+  },
+  "feedbackDescription": {
+    "message": "遇到问题或有建议？",
+    "description": "反馈描述文本"
+  },
+  "bangSearchPlaceholder": {
+    "message": "在 {name} 中搜索...",
+    "description": "Bang 模式搜索占位符"
   }
 }

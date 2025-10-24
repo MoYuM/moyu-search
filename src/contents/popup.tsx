@@ -1,6 +1,6 @@
 import type { IFuseOptions } from 'fuse.js'
-import type { SearchResult } from '../type'
-import { sendToBackground } from '@plasmohq/messaging'
+import type { ExtensionMessage } from '~types/extension'
+import type { BangShortcut, SearchResult } from '../type'
 import clsx from 'clsx'
 import cssText from 'data-text:~style.css'
 import Fuse from 'fuse.js'
@@ -11,18 +11,20 @@ import Box from 'react:/assets/box.svg'
 import Clock from 'react:/assets/clock.svg'
 import Search from 'react:/assets/search.svg'
 import { useSearchEngine } from '~hooks/useSearchEngine'
-
 import { useTheme } from '~hooks/useTheme'
+
 import { DEFAULT_OPTIONS, useUserOptions } from '~store/options'
+import { safeSendToBackground } from '~utils/safeSendToBackground'
 import { Key } from '../key'
 import FaviconImg from './components/faviconImg'
 import SearchInput from './components/searchInput'
 
 const IconMap: Record<SearchResult['type'], any> = {
-  tab: Box,
-  history: Clock,
-  bookmark: Bookmark,
-  search: Search,
+  'tab': Box,
+  'history': Clock,
+  'bookmark': Bookmark,
+  'search': Search,
+  'bang-search': Search,
 }
 
 const fuseOptions: IFuseOptions<SearchResult> = {
@@ -40,6 +42,7 @@ const fuseOptions: IFuseOptions<SearchResult> = {
 export function getStyle() {
   const style = document.createElement('style')
   style.textContent = cssText
+  style.setAttribute('data-moyu-search-style', 'true')
   return style
 }
 
@@ -51,18 +54,20 @@ function Popup() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
   const [isKeyboardNav, setIsKeyboardNav] = useState(true)
+  const [bangMode, setBangMode] = useState<BangShortcut | null>(null)
 
   const inputRef = useRef<HTMLInputElement>(null)
   const isMoved = useRef(false)
   const itemRefs = useRef<(HTMLDivElement | null)[]>([])
   const fuseRef = useRef<Fuse<SearchResult> | null>(null)
 
-  // 搜索引擎配置
   const { getSearchItem, getSearchUrl } = useSearchEngine()
-  // 切换主题
   const [theme] = useTheme()
-  // 用户配置
-  const [userOptions] = useUserOptions()
+  const userOptions = useUserOptions()
+
+  const getBangSearchUrl = (bang: BangShortcut, query: string): string => {
+    return bang.searchUrl.replace('{query}', encodeURIComponent(query))
+  }
 
   useEffect(() => {
     if (open) {
@@ -110,7 +115,19 @@ function Popup() {
       }
     }
 
-    const newList = [...tabs, ...others]
+    let newList = [...tabs, ...others]
+
+    // 如果处于 bang mode，在列表开头添加 bang 搜索项
+    if (bangMode && keyword.trim()) {
+      const bangSearchItem: SearchResult = {
+        type: 'bang-search',
+        id: `bang-search-${bangMode.keyword}`,
+        title: `使用 ${bangMode.name} 进行搜索`,
+        url: getBangSearchUrl(bangMode, keyword),
+        bangMode,
+      }
+      newList = [bangSearchItem, ...newList]
+    }
 
     if (newList.length === 0 && keyword.trim()) {
       const searchItem = getSearchItem(keyword)
@@ -123,10 +140,15 @@ function Popup() {
   // -------- handler --------
 
   const handleDirectSearch = () => {
-    const searchUrl = getSearchUrl(searchQuery)
-    sendToBackground({
+    const searchUrl = bangMode
+      ? getBangSearchUrl(bangMode, searchQuery)
+      : getSearchUrl(searchQuery)
+    const message: ExtensionMessage = {
       name: 'new-tab',
       body: { url: searchUrl },
+    }
+    safeSendToBackground(message, { retry: true }).catch((error) => {
+      console.error('Failed to open new tab:', error)
     })
     handleClose()
   }
@@ -143,9 +165,11 @@ function Popup() {
 
   const loadRecentTabs = async () => {
     try {
-      const { results } = await sendToBackground({ name: 'get-recent-tabs' })
+      const message: ExtensionMessage = { name: 'get-recent-tabs' }
+      const { results } = await safeSendToBackground<{ results: SearchResult[] }>(message, { retry: true })
       setList(results)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Failed to load recent tabs:', error)
       setList([])
     }
@@ -162,22 +186,34 @@ function Popup() {
     setSearchQuery('')
     setActiveIndex(0)
     setList([])
+    setBangMode(null)
     isMoved.current = false
   }
 
   // 新增：加载所有数据并初始化搜索
   const loadAllData = async () => {
-    const { results, fuseIndex } = await sendToBackground({
-      name: 'get-all',
-      body: { forceRefresh: false },
-    })
+    try {
+      const message: ExtensionMessage = {
+        name: 'get-all',
+        body: { forceRefresh: false },
+      }
+      const { results, fuseIndex } = await safeSendToBackground<{
+        results: SearchResult[]
+        fuseIndex: any
+      }>(message, { retry: true })
 
-    if (fuseIndex) {
-      const parsedIndex = Fuse.parseIndex(fuseIndex)
-      fuseRef.current = new Fuse<SearchResult>(results, fuseOptions, parsedIndex)
+      if (fuseIndex) {
+        const parsedIndex = Fuse.parseIndex(fuseIndex)
+        fuseRef.current = new Fuse<SearchResult>(results, fuseOptions, parsedIndex)
+      }
+      else {
+        fuseRef.current = new Fuse<SearchResult>(results, fuseOptions)
+      }
     }
-    else {
-      fuseRef.current = new Fuse<SearchResult>(results, fuseOptions)
+    catch (error) {
+      console.error('Failed to load all data:', error)
+      // 如果加载失败，至少加载最近的标签页
+      loadRecentTabs()
     }
   }
 
@@ -192,10 +228,28 @@ function Popup() {
   }
   const handleOpenResult = (item?: SearchResult) => {
     const res = item || list[activeIndex]
-    sendToBackground({
-      name: 'open-result',
-      body: res,
-    })
+
+    // 如果选中的是 bang 搜索项，直接使用 bang 搜索
+    if (res.type === 'bang-search' && res.bangMode) {
+      const searchUrl = getBangSearchUrl(res.bangMode, searchQuery)
+      const message: ExtensionMessage = {
+        name: 'new-tab',
+        body: { url: searchUrl },
+      }
+      safeSendToBackground(message, { retry: true }).catch((error) => {
+        console.error('Failed to open new tab:', error)
+      })
+    }
+    else {
+      // 其他情况都按照原逻辑处理，直接跳转到对应的 tab
+      const message: ExtensionMessage = {
+        name: 'open-result',
+        body: res,
+      }
+      safeSendToBackground(message, { retry: true }).catch((error) => {
+        console.error('Failed to open result:', error)
+      })
+    }
     handleClose()
   }
 
@@ -274,10 +328,11 @@ function Popup() {
       className={`fixed left-0 top-0 w-screen h-screen z-[9999] ${theme}`}
       style={{ display: open ? 'block' : 'none' }}
       onClick={handleClose}
+      data-moyu-search-popup
     >
       <div
         className={`
-          absolute left-1/2 top-1/4 -translate-x-1/2 w-[700px] p-2 flex flex-col gap-2 rounded-2xl shadow-2xl ${open ? 'block' : 'hidden'}
+          absolute left-1/2 top-1/4 -translate-x-1/2 w-[700px] p-2 flex flex-col rounded-3xl shadow-2xl ${open ? 'block' : 'hidden'}
           bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700
         `}
         onClick={e => e.stopPropagation()}
@@ -287,6 +342,8 @@ function Popup() {
           value={searchQuery}
           onChange={handleSearchQueryChange}
           onKeyUp={handleKeyUp}
+          bangMode={bangMode}
+          onBangModeChange={setBangMode}
         />
         <div className="flex flex-col gap-1 mt-2 overflow-y-auto rounded-xl max-h-96 min-h-12 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {list?.map((item, index) => (

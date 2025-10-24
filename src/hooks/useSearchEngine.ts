@@ -11,7 +11,7 @@ import { useUserOptions } from '~store/options'
  * @returns 获取搜索引擎的搜索url和搜索项
  */
 export function useSearchEngine() {
-  const [userOptions] = useUserOptions()
+  const userOptions = useUserOptions()
 
   const searchEngine: UserOptions['searchEngine'] = userOptions?.searchEngine
 

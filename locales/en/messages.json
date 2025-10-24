@@ -78,5 +78,93 @@
   "hotkeyErrorNoNormalKey": {
     "message": "At least one function key is required",
     "description": "快捷键验证错误：缺少功能键"
+  },
+  "bangShortcuts": {
+    "message": "Bang Shortcuts",
+    "description": "Bang 快捷方式标题"
+  },
+  "bangKeyword": {
+    "message": "Keyword",
+    "description": "Bang 触发词标签"
+  },
+  "bangName": {
+    "message": "Name",
+    "description": "Bang 名称标签"
+  },
+  "bangSearchUrl": {
+    "message": "Search URL",
+    "description": "Bang 搜索 URL 标签"
+  },
+  "bangAdd": {
+    "message": "Add Shortcut",
+    "description": "添加 Bang 快捷方式按钮"
+  },
+  "bangEdit": {
+    "message": "Edit",
+    "description": "编辑 Bang 快捷方式按钮"
+  },
+  "bangDelete": {
+    "message": "Delete",
+    "description": "删除 Bang 快捷方式按钮"
+  },
+  "bangUrlPlaceholder": {
+    "message": "Use {query} as search keyword placeholder",
+    "description": "Bang URL 占位符提示"
+  },
+  "bangKeywordPlaceholder": {
+    "message": "e.g.: wiki, reddit",
+    "description": "Bang 关键词占位符提示"
+  },
+  "bangNamePlaceholder": {
+    "message": "e.g.: Wikipedia",
+    "description": "Bang 名称占位符提示"
+  },
+  "bangValidateKeywordEmpty": {
+    "message": "Keyword cannot be empty",
+    "description": "Bang 验证错误：触发词为空"
+  },
+  "bangValidateKeywordDuplicate": {
+    "message": "Keyword already exists",
+    "description": "Bang 验证错误：触发词重复"
+  },
+  "bangValidateUrlEmpty": {
+    "message": "Search URL cannot be empty",
+    "description": "Bang 验证错误：URL 为空"
+  },
+  "bangValidateUrlNoPlaceholder": {
+    "message": "Search URL must contain {query} placeholder",
+    "description": "Bang 验证错误：URL 缺少占位符"
+  },
+  "success": {
+    "message": "Success",
+    "description": "操作成功提示"
+  },
+  "basicConfig": {
+    "message": "Basic Configuration",
+    "description": "基础配置标题"
+  },
+  "bangMode": {
+    "message": "Bang Mode",
+    "description": "Bang 模式标题"
+  },
+  "bangModeTooltipLine1": {
+    "message": "Type 'bang keyword' in the search box and press Tab to enter bang mode",
+    "description": "Bang 模式提示第一行"
+  },
+  "bangModeTooltipLine2": {
+    "message": "Then you can search directly on the corresponding site",
+    "description": "Bang 模式提示第二行"
+  },
+  "feedback": {
+    "message": "Feedback",
+    "description": "反馈按钮文本"
+  },
+  "feedbackDescription": {
+    "message": "Found a bug or have suggestions?",
+    "description": "反馈描述文本"
+  },
+  "bangSearchPlaceholder": {
+    "message": "Search in {name}...",
+    "description": "Bang mode search placeholder"
   }
 }
