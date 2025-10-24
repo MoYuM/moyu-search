@@ -122,7 +122,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) 
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
         onKeyPress={handleKeyPress}
-        placeholder={bangMode ? `在 ${bangMode.name} 中搜索...` : t('searchPlaceholder')}
+        placeholder={bangMode ? t('bangSearchPlaceholder', { name: bangMode.name }) : t('searchPlaceholder')}
         autoFocus={false}
       />
       <div className="flex items-center text-gray-400 dark:text-gray-500 gap-2">

@@ -162,5 +162,9 @@
   "feedbackDescription": {
     "message": "Found a bug or have suggestions?",
     "description": "反馈描述文本"
+  },
+  "bangSearchPlaceholder": {
+    "message": "Search in {name}...",
+    "description": "Bang mode search placeholder"
   }
 }
