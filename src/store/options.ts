@@ -16,6 +16,7 @@ export const DEFAULT_BANG_CONFIG: BangConfig = {
   Reddit: 'reddit',
   Wikipedia: 'wiki',
   ChatGPT: 'chatgpt',
+  GitHub: 'gh',
 }
 
 /**
@@ -26,6 +27,7 @@ export const DEFAULT_BANG_SEARCH_URLS: BangConfig = {
   Reddit: 'https://www.reddit.com/search/?q={query}',
   Wikipedia: 'https://en.wikipedia.org/w/index.php?search={query}',
   ChatGPT: 'https://chatgpt.com/?q={query}',
+  GitHub: 'https://github.com/search?q={query}',
 }
 
 /**

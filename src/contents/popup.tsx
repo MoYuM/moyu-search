@@ -10,7 +10,6 @@ import Bookmark from 'react:/assets/bookmark.svg'
 import Box from 'react:/assets/box.svg'
 import Clock from 'react:/assets/clock.svg'
 import Search from 'react:/assets/search.svg'
-import { useBangShortcuts } from '~hooks/useBangShortcuts'
 import { useSearchEngine } from '~hooks/useSearchEngine'
 import { useTheme } from '~hooks/useTheme'
 
@@ -63,9 +62,12 @@ function Popup() {
   const fuseRef = useRef<Fuse<SearchResult> | null>(null)
 
   const { getSearchItem, getSearchUrl } = useSearchEngine()
-  const { getBangSearchUrl } = useBangShortcuts()
   const [theme] = useTheme()
   const userOptions = useUserOptions()
+
+  const getBangSearchUrl = (bang: BangShortcut, query: string): string => {
+    return bang.searchUrl.replace('{query}', encodeURIComponent(query))
+  }
 
   useEffect(() => {
     if (open) {
