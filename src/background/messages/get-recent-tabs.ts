@@ -12,14 +12,14 @@ const handler: PlasmoMessaging.MessageHandler<
 > = async (_, res) => {
   try {
     const allTabs = await chrome.tabs.query({
-        status: 'complete',
-        currentWindow: true,
+      status: 'complete',
+      currentWindow: true,
     })
-      
+
     const recentTabs = allTabs
       .filter(tab => tab.id && tab.url && !tab.url.startsWith('chrome://'))
       .sort((a: any, b: any) => b.lastAccessed - a.lastAccessed)
-      .slice(0, 6)
+      .slice(0, 8)
       .map(tab => ({
         id: tab.id!.toString(),
         title: tab.title || '',
@@ -39,7 +39,8 @@ const handler: PlasmoMessaging.MessageHandler<
     res.send({
       results: tabResults,
     })
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error in get-recent-tabs handler:', error)
     res.send({
       results: [],
