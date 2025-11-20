@@ -39,7 +39,9 @@ let cache: CacheData | null = null
 const CACHE_DURATION = 30 * 1000 // 30秒缓存
 const CACHE_DURATION_TABS_ONLY = 5 * 1000 // tabs变化频繁，5秒缓存
 
-// 为搜索项添加拼音支持（优化版本）
+/**
+ * 添加拼音支持
+ */
 function addPinyinSupport(items: SearchResult[]): SearchResult[] {
   return items.map((item) => {
     const title = item.title || ''
@@ -71,7 +73,61 @@ function addPinyinSupport(items: SearchResult[]): SearchResult[] {
   })
 }
 
-// 获取所有书签（递归，优化版本）
+/**
+ * 排除零宽度字符
+ */
+function formatTitle(title: string) {
+  return title.replaceAll(/\p{Cf}/gu, '')
+}
+
+/**
+ * 处理书签数据
+ */
+function formatBookmark(bookmarks: chrome.bookmarks.BookmarkTreeNode[]): SearchResult[] {
+  return bookmarks
+    .filter(bookmark => bookmark.url)
+    .map(bookmark => ({
+      type: 'bookmark',
+      id: bookmark.id,
+      title: formatTitle(bookmark.title) || '',
+      url: bookmark.url || '',
+      dateAdded: bookmark.dateAdded,
+    }))
+}
+
+/**
+ * 处理历史记录数据
+ */
+function formatHistory(history: chrome.history.HistoryItem[]): SearchResult[] {
+  return history.map(item => ({
+    type: 'history',
+    id: item.id || '',
+    title: formatTitle(item.title) || '',
+    url: item.url || '',
+    lastVisitTime: item.lastVisitTime,
+  }))
+}
+
+/**
+ * 处理 Tab 数据
+ */
+function formatTab(allTabs: chrome.tabs.Tab[]): SearchResult[] {
+  const currentTabId = allTabs[0]?.id
+  return allTabs
+    .filter(tab => tab.id !== currentTabId)
+    .map(tab => ({
+      type: 'tab',
+      id: tab.id?.toString() || '',
+      title: formatTitle(tab.title) || '',
+      url: tab.url || '',
+      lastAccessed: (tab as any).lastAccessed || Date.now(),
+      favicon: tab.favIconUrl,
+    }))
+}
+
+/**
+ * 获取所有书签
+ */
 async function getAllBookmarks(): Promise<chrome.bookmarks.BookmarkTreeNode[]> {
   const tree = await chrome.bookmarks.getTree()
   const bookmarks: chrome.bookmarks.BookmarkTreeNode[] = []
@@ -89,6 +145,24 @@ async function getAllBookmarks(): Promise<chrome.bookmarks.BookmarkTreeNode[]> {
 
   traverse(tree)
   return bookmarks
+}
+
+/**
+ * 获取所有 Tabs
+ */
+async function getAllTabs(): Promise<chrome.tabs.Tab[]> {
+  return chrome.tabs.query({ active: true, currentWindow: true })
+}
+
+/**
+ * 获取所有历史记录
+ */
+async function getAllHistory(): Promise<chrome.history.HistoryItem[]> {
+  return chrome.history.search({
+    text: '',
+    maxResults: 1000,
+    startTime: 0,
+  })
 }
 
 // 生成tabs的简单hash用于检测变化
@@ -135,53 +209,17 @@ const handler: PlasmoMessaging.MessageHandler<
       return
     }
 
-    // 并行获取所有数据
     const [currentTab, history, bookmarks] = await Promise.all([
-      chrome.tabs.query({ active: true, currentWindow: true }),
-      chrome.history.search({
-        text: '',
-        maxResults: 1000,
-        startTime: 0,
-      }),
+      getAllTabs(),
+      getAllHistory(),
       getAllBookmarks(),
     ])
 
-    const currentTabId = currentTab[0]?.id
-
-    // 处理tabs数据
-    const tabResults: SearchResult[] = allTabs
-      .filter(tab => tab.id !== currentTabId)
-      .map(tab => ({
-        type: 'tab',
-        id: tab.id?.toString() || '',
-        title: tab.title || '',
-        url: tab.url || '',
-        lastAccessed: (tab as any).lastAccessed || Date.now(),
-        favicon: tab.favIconUrl,
-      }))
-
-    // 处理历史记录数据
-    const historyResults: SearchResult[] = history.map(item => ({
-      type: 'history',
-      id: item.id || '',
-      title: item.title || '',
-      url: item.url || '',
-      lastVisitTime: item.lastVisitTime,
-    }))
-
-    // 处理书签数据
-    const bookmarkResults: SearchResult[] = bookmarks
-      .filter(bookmark => bookmark.url)
-      .map(bookmark => ({
-        type: 'bookmark',
-        id: bookmark.id,
-        title: bookmark.title || '',
-        url: bookmark.url || '',
-        dateAdded: bookmark.dateAdded,
-      }))
-
-    // 合并所有结果
-    const allResults = [...tabResults, ...historyResults, ...bookmarkResults]
+    const allResults = [
+      ...formatTab(currentTab),
+      ...formatHistory(history),
+      ...formatBookmark(bookmarks),
+    ]
 
     // 添加拼音支持
     const resultsWithPinyin = addPinyinSupport(allResults)
@@ -208,6 +246,7 @@ const handler: PlasmoMessaging.MessageHandler<
         'titlePinyinInitials',
       ],
     }
+
     const fuseIndex = Fuse.createIndex(fuseOptions.keys, resultsWithFavicon)
 
     // 更新缓存
