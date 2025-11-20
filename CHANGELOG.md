@@ -1,5 +1,18 @@
 # Changelog
 
+## [v0.3.0] - 2025-11-20
+
+### Features
+
+- **Favicon**: 重写图标获取逻辑，优先从 HTML 解析，移除对 `faviconDataUrl` 的依赖
+- **性能**: 优化数据请求触发时机，改为在 document visible 时触发
+- **UI**: 移除列表 Hover 效果及过渡动画，进行样式微调
+
+### Fixes
+
+- 修复数据字段错误
+- 修复搜索结果包含零宽度字符的问题
+
 ## [v0.2.1] - 2025-10-24
 
 - **Chore**: 移除不必要的 scripting 权限
