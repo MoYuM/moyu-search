@@ -1,7 +1,7 @@
+import type { ExtensionMessage } from '~types/extension'
 import { useEffect, useState } from 'react'
 import Circle from 'react:/assets/circle.svg'
 import { safeSendToBackgroundSimple } from '~utils/safeSendToBackground'
-import type { ExtensionMessage } from '~types/extension'
 
 function FaviconImg({ favicon, url }: { favicon?: string, url: string }) {
   const [src, setSrc] = useState<string>('')
@@ -32,13 +32,13 @@ function FaviconImg({ favicon, url }: { favicon?: string, url: string }) {
         body: { url, favicon },
       }
       const response = await safeSendToBackgroundSimple(message)
-      
-      if (response.success && response.data?.dataUrl) {
-        setSrc(response.data.dataUrl)
-      } else {
+
+      if (response.dataUrl) {
+        setSrc(response.dataUrl)
+      }
+      else {
         setSrc('')
       }
-
     }
     catch {
       setSrc('')
