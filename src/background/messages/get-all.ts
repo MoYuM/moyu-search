@@ -1,7 +1,6 @@
 import type { PlasmoMessaging } from '@plasmohq/messaging'
 import Fuse from 'fuse.js'
 import pinyin from 'pinyin'
-import { processFaviconForItem } from '../services/favicon-cache'
 
 export interface RequestBody {
   forceRefresh?: boolean
@@ -224,17 +223,6 @@ const handler: PlasmoMessaging.MessageHandler<
     // 添加拼音支持
     const resultsWithPinyin = addPinyinSupport(allResults)
 
-    // 处理 favicon 数据
-    const resultsWithFavicon = await Promise.all(
-      resultsWithPinyin.map(async (item) => {
-        const faviconDataUrl = await processFaviconForItem(item.url, item.favicon)
-        return {
-          ...item,
-          faviconDataUrl,
-        }
-      }),
-    )
-
     // 预生成 Fuse.js 索引以加速搜索
     const fuseOptions = {
       includeScore: true,
@@ -247,18 +235,18 @@ const handler: PlasmoMessaging.MessageHandler<
       ],
     }
 
-    const fuseIndex = Fuse.createIndex(fuseOptions.keys, resultsWithFavicon)
+    const fuseIndex = Fuse.createIndex(fuseOptions.keys, resultsWithPinyin)
 
     // 更新缓存
     cache = {
-      results: resultsWithFavicon,
+      results: resultsWithPinyin,
       fuseIndex: fuseIndex.toJSON(), // 序列化索引以便传输
       timestamp: Date.now(),
       tabsHash,
     }
 
     res.send({
-      results: resultsWithFavicon,
+      results: resultsWithPinyin,
       fuseIndex: fuseIndex.toJSON(),
       fromCache: false,
     })
