@@ -96,15 +96,16 @@ async function getImgByUrl(url: string) {
     return cache
   }
 
-  // 1. 尝试从根目录获取 favicon.ico (最快，最常见)
-  let base64 = await getFaviconFromRoot(url)
+  // 默认从 html 中取
+  // 例如飞书文档这种，根目录中的 icon 是不准的
+  let base64 = await getFaviconFromHtml(url)
 
-  // 2. 如果失败，尝试解析 HTML
+  // 从根目录中取
   if (!base64) {
-    base64 = await getFaviconFromHtml(url)
+    base64 = await getFaviconFromRoot(url)
   }
 
-  // 3. 如果还失败，尝试 Google API
+  // 如果还失败，尝试 Google API
   if (!base64) {
     base64 = await getFaviconFromGoogle(url)
   }
