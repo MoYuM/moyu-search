@@ -7,7 +7,6 @@ export interface SearchResult {
   lastVisitTime?: number
   dateAdded?: number
   favicon?: string
-  faviconDataUrl?: string
   titlePinyin?: string
   titlePinyinInitials?: string
   bangMode?: BangShortcut
