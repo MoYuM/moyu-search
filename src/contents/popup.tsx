@@ -53,7 +53,6 @@ function Popup() {
   const [list, setList] = useState<SearchResult[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
-  const [isKeyboardNav, setIsKeyboardNav] = useState(true)
   const [bangMode, setBangMode] = useState<BangShortcut | null>(null)
 
   const inputRef = useRef<HTMLInputElement>(null)
@@ -154,12 +153,10 @@ function Popup() {
   }
 
   const handlePrev = () => {
-    setIsKeyboardNav(true)
     setActiveIndex(prev => (prev - 1 + list.length) % list.length)
   }
 
   const handleNext = () => {
-    setIsKeyboardNav(true)
     setActiveIndex(prev => (prev + 1) % list.length)
   }
 
@@ -350,19 +347,13 @@ function Popup() {
             <div
               key={`${item.id}-${item.url}`}
               ref={el => itemRefs.current[index] = el}
-              className={clsx(
-                'flex items-center justify-between gap-2 px-3 py-2 rounded-xl cursor-pointer',
-                index === activeIndex
-                  ? 'bg-zinc-200 dark:bg-zinc-700'
-                  : 'hover:bg-zinc-100 dark:hover:bg-zinc-700',
-              )}
               onClick={() => handleOpenResult(item)}
-              onMouseOver={() => {
-                // 只有鼠标导航时才允许 setActiveIndex
-                if (!isKeyboardNav)
-                  setActiveIndex(index)
-              }}
-              onMouseDown={() => setIsKeyboardNav(false)}
+              className={clsx(
+                'flex items-center justify-between gap-2 px-3 py-2 rounded-xl cursor-pointer transition-none',
+                {
+                  'bg-zinc-200 dark:bg-zinc-700': index === activeIndex,
+                },
+              )}
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
                 <FaviconImg favicon={item.faviconDataUrl || item.favicon} url={item.url} />
