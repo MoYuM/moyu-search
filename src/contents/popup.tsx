@@ -1,6 +1,7 @@
 import type { IFuseOptions } from 'fuse.js'
 import type { ExtensionMessage } from '~types/extension'
 import type { BangShortcut, SearchResult } from '../type'
+import { useDocumentVisibility } from 'ahooks'
 import cssText from 'data-text:~style.css'
 import Fuse from 'fuse.js'
 import { useEffect, useRef, useState } from 'react'
@@ -12,6 +13,15 @@ import { safeSendToBackground } from '~utils/safeSendToBackground'
 import { Key } from '../key'
 import SearchInput from './components/searchInput'
 import SearchList from './components/searchList'
+
+const { ArrowUp, ArrowDown, Enter, Escape, Shift, Control } = Key
+
+export function getStyle() {
+  const style = document.createElement('style')
+  style.textContent = cssText
+  style.setAttribute('data-moyu-search-style', 'true')
+  return style
+}
 
 const fuseOptions: IFuseOptions<SearchResult> = {
   includeScore: true,
@@ -25,14 +35,9 @@ const fuseOptions: IFuseOptions<SearchResult> = {
   ],
 }
 
-export function getStyle() {
-  const style = document.createElement('style')
-  style.textContent = cssText
-  style.setAttribute('data-moyu-search-style', 'true')
-  return style
+function getBangSearchUrl(bang: BangShortcut, query: string): string {
+  return bang.searchUrl.replace('{query}', encodeURIComponent(query))
 }
-
-const { ArrowUp, ArrowDown, Enter, Escape, Shift, Control } = Key
 
 function Popup() {
   const [open, setOpen] = useState(false)
@@ -48,10 +53,14 @@ function Popup() {
   const { getSearchItem, getSearchUrl } = useSearchEngine()
   const [theme] = useTheme()
   const userOptions = useUserOptions()
+  const documentVisibility = useDocumentVisibility()
 
-  const getBangSearchUrl = (bang: BangShortcut, query: string): string => {
-    return bang.searchUrl.replace('{query}', encodeURIComponent(query))
-  }
+  useEffect(() => {
+    if (documentVisibility === 'visible') {
+      loadRecentTabs()
+      loadAllData()
+    }
+  }, [documentVisibility])
 
   useEffect(() => {
     if (open) {
@@ -143,15 +152,12 @@ function Popup() {
 
   const handleOpen = async () => {
     setOpen(true)
-    loadRecentTabs()
-    loadAllData()
   }
 
   const handleClose = () => {
     setOpen(false)
     setSearchQuery('')
     setActiveIndex(0)
-    setList([])
     setBangMode(null)
     isMoved.current = false
   }
