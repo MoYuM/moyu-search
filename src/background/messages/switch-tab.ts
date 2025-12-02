@@ -1,20 +1,20 @@
-import type { PlasmoMessaging } from '@plasmohq/messaging'
+import type { PlasmoMessaging } from "@plasmohq/messaging";
 
 export interface RequestBody {
-  tabId: number
+  tabId: number;
 }
 
-export interface ResponseBody {}
+export type ResponseBody = Record<string, never>;
 
 const handler: PlasmoMessaging.MessageHandler<
-    RequestBody,
-    ResponseBody
+  RequestBody,
+  ResponseBody
 > = async (req, res) => {
-  const { tabId } = req.body
+  const { tabId } = req.body;
 
-  await chrome.tabs.update(tabId, { active: true })
+  await chrome.tabs.update(tabId, { active: true });
 
-  res.send({})
-}
+  res.send({});
+};
 
-export default handler
+export default handler;

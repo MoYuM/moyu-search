@@ -1,141 +1,141 @@
-import React from 'react'
-import { Key } from '../../key'
+import type React from "react";
+import { Key } from "../../key";
 
 interface HotkeyIconProps {
-  keys: string[]
-  className?: string
-  size?: 'sm' | 'md' | 'lg'
+  keys: string[];
+  className?: string;
+  size?: "sm" | "md" | "lg";
 }
 
 // 快捷键图标映射
 const keyIcons: Record<string, string> = {
   // 修饰键
-  [Key.Control]: '⌃',
-  [Key.Meta]: '⌘',
-  [Key.Alt]: '⌥',
-  [Key.Shift]: '⇧',
+  [Key.Control]: "⌃",
+  [Key.Meta]: "⌘",
+  [Key.Alt]: "⌥",
+  [Key.Shift]: "⇧",
 
   // 功能键
-  [Key.Enter]: '↵',
-  [Key.Escape]: '⎋',
-  [Key.Tab]: '⇥',
-  ' ': '␣', // Space
-  [Key.Backspace]: '⌫',
-  [Key.Delete]: '⌦',
+  [Key.Enter]: "↵",
+  [Key.Escape]: "⎋",
+  [Key.Tab]: "⇥",
+  " ": "␣", // Space
+  [Key.Backspace]: "⌫",
+  [Key.Delete]: "⌦",
 
   // 方向键
-  [Key.ArrowUp]: '↑',
-  [Key.ArrowDown]: '↓',
-  [Key.ArrowLeft]: '←',
-  [Key.ArrowRight]: '→',
+  [Key.ArrowUp]: "↑",
+  [Key.ArrowDown]: "↓",
+  [Key.ArrowLeft]: "←",
+  [Key.ArrowRight]: "→",
 
   // 其他常用键
-  [Key.Home]: '⇱',
-  [Key.End]: '⇲',
-  [Key.PageUp]: '⇞',
-  [Key.PageDown]: '⇟',
+  [Key.Home]: "⇱",
+  [Key.End]: "⇲",
+  [Key.PageUp]: "⇞",
+  [Key.PageDown]: "⇟",
 
   // 功能键 F1-F12
-  [Key.F1]: 'F1',
-  [Key.F2]: 'F2',
-  [Key.F3]: 'F3',
-  [Key.F4]: 'F4',
-  [Key.F5]: 'F5',
-  [Key.F6]: 'F6',
-  [Key.F7]: 'F7',
-  [Key.F8]: 'F8',
-  [Key.F9]: 'F9',
-  [Key.F10]: 'F10',
-  [Key.F11]: 'F11',
-  [Key.F12]: 'F12',
+  [Key.F1]: "F1",
+  [Key.F2]: "F2",
+  [Key.F3]: "F3",
+  [Key.F4]: "F4",
+  [Key.F5]: "F5",
+  [Key.F6]: "F6",
+  [Key.F7]: "F7",
+  [Key.F8]: "F8",
+  [Key.F9]: "F9",
+  [Key.F10]: "F10",
+  [Key.F11]: "F11",
+  [Key.F12]: "F12",
 
   // 数字键
-  '0': '0',
-  '1': '1',
-  '2': '2',
-  '3': '3',
-  '4': '4',
-  '5': '5',
-  '6': '6',
-  '7': '7',
-  '8': '8',
-  '9': '9',
+  "0": "0",
+  "1": "1",
+  "2": "2",
+  "3": "3",
+  "4": "4",
+  "5": "5",
+  "6": "6",
+  "7": "7",
+  "8": "8",
+  "9": "9",
 
   // 字母键
-  'a': 'A',
-  'b': 'B',
-  'c': 'C',
-  'd': 'D',
-  'e': 'E',
-  'f': 'F',
-  'g': 'G',
-  'h': 'H',
-  'i': 'I',
-  'j': 'J',
-  'k': 'K',
-  'l': 'L',
-  'm': 'M',
-  'n': 'N',
-  'o': 'O',
-  'p': 'P',
-  'q': 'Q',
-  'r': 'R',
-  's': 'S',
-  't': 'T',
-  'u': 'U',
-  'v': 'V',
-  'w': 'W',
-  'x': 'X',
-  'y': 'Y',
-  'z': 'Z',
+  a: "A",
+  b: "B",
+  c: "C",
+  d: "D",
+  e: "E",
+  f: "F",
+  g: "G",
+  h: "H",
+  i: "I",
+  j: "J",
+  k: "K",
+  l: "L",
+  m: "M",
+  n: "N",
+  o: "O",
+  p: "P",
+  q: "Q",
+  r: "R",
+  s: "S",
+  t: "T",
+  u: "U",
+  v: "V",
+  w: "W",
+  x: "X",
+  y: "Y",
+  z: "Z",
 
   // 特殊字符
-  '+': '+',
-  '-': '-',
-  '=': '=',
-  '/': '/',
-  '\\': '\\',
-  '[': '[',
-  ']': ']',
-  '{': '{',
-  '}': '}',
-  '|': '|',
-  ';': ';',
-  ':': ':',
-  '\'': '\'',
+  "+": "+",
+  "-": "-",
+  "=": "=",
+  "/": "/",
+  "\\": "\\",
+  "[": "[",
+  "]": "]",
+  "{": "{",
+  "}": "}",
+  "|": "|",
+  ";": ";",
+  ":": ":",
+  "'": "'",
   '"': '"',
-  ',': ',',
-  '.': '.',
-  '<': '<',
-  '>': '>',
-  '?': '?',
-  '~': '~',
+  ",": ",",
+  ".": ".",
+  "<": "<",
+  ">": ">",
+  "?": "?",
+  "~": "~",
 
   // 其他常用键
-  [Key.Insert]: 'Ins',
-  [Key.PrintScreen]: 'PrtSc',
-  [Key.ScrollLock]: 'ScrLk',
-  [Key.Pause]: 'Pause',
-  [Key.NumLock]: 'Num',
-  [Key.CapsLock]: 'Caps',
-}
+  [Key.Insert]: "Ins",
+  [Key.PrintScreen]: "PrtSc",
+  [Key.ScrollLock]: "ScrLk",
+  [Key.Pause]: "Pause",
+  [Key.NumLock]: "Num",
+  [Key.CapsLock]: "Caps",
+};
 
 // 大小样式映射
 const sizeStyles = {
-  sm: 'text-xs px-1.5 py-0.5',
-  md: 'text-sm px-1 py-0.5',
-  lg: 'text-base px-2.5 py-1.5',
-}
+  sm: "text-xs px-1.5 py-0.5",
+  md: "text-sm px-1 py-0.5",
+  lg: "text-base px-2.5 py-1.5",
+};
 
 const HotkeyIcon: React.FC<HotkeyIconProps> = ({
   keys,
-  className = '',
-  size = 'md',
+  className = "",
+  size = "md",
 }) => {
   // 获取键的显示文本
   const getKeyDisplay = (key: string): string => {
-    return keyIcons[key] || key.toUpperCase()
-  }
+    return keyIcons[key] || key.toUpperCase();
+  };
 
   return (
     <kbd
@@ -146,16 +146,13 @@ const HotkeyIcon: React.FC<HotkeyIconProps> = ({
         ${className}
       `}
     >
-      {keys?.map((key, index) => (
-        <span
-          key={index}
-          className="text-gray-400 dark:text-gray-500"
-        >
+      {keys?.map((key) => (
+        <span key={key} className="text-gray-400 dark:text-gray-500">
           {getKeyDisplay(key)}
         </span>
       ))}
     </kbd>
-  )
-}
+  );
+};
 
-export default HotkeyIcon
+export default HotkeyIcon;

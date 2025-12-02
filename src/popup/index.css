@@ -1,3 +1,5 @@
+/* biome-ignore-start lint/suspicious/noUnknownAtRules: tailwind at-rules are valid */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* biome-ignore-end lint/suspicious/noUnknownAtRules: tailwind at-rules are valid */

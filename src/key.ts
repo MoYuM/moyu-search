@@ -11,29 +11,29 @@ export enum Key {
    * This can happen due to hardware or software constraints, or because of
    * constraints around the platform on which the user agent is running.
    */
-  Unidentified = 'Unidentified',
+  Unidentified = "Unidentified",
 
   /** The Alt (Alternative) key. */
-  Alt = 'Alt',
+  Alt = "Alt",
 
   /**
    * The AltGr or AltGraph (Alternate Graphics) key.
    * Enables the ISO Level 3 shift modifier (where Shift is the
    * level 2 modifier).
    */
-  AltGraph = 'AltGraph',
+  AltGraph = "AltGraph",
 
   /**
    * The Caps Lock key. Toggles the capital character lock on and
    * off for subsequent input.
    */
-  CapsLock = 'CapsLock',
+  CapsLock = "CapsLock",
 
   /**
    * The Control, Ctrl, or Ctl key. Allows
    * typing control characters.
    */
-  Control = 'Control',
+  Control = "Control",
 
   /**
    * The Fn (Function modifier) key. Used to allow generating
@@ -41,159 +41,159 @@ export enum Key {
    * keyboards without a dedicated function key area. Often handled in
    * hardware so that events aren't generated for this key.
    */
-  Fn = 'Fn',
+  Fn = "Fn",
 
   /**
    * The FnLock or F-Lock (Function Lock) key.Toggles
    * the function key mode described by "Fn" on and off. Often
    * handled in hardware so that events aren't generated for this key.
    */
-  FnLock = 'FnLock',
+  FnLock = "FnLock",
 
   /** The Hyper key. */
-  Hyper = 'Hyper',
+  Hyper = "Hyper",
 
   /**
    * The Meta key. Allows issuing special command inputs. This is
    * the Windows logo key, or the Command or
    * ⌘ key on Mac keyboards.
    */
-  Meta = 'Meta',
+  Meta = "Meta",
 
   /**
    * The NumLock (Number Lock) key. Toggles the numeric keypad
    * between number entry some other mode (often directional arrows).
    */
-  NumLock = 'NumLock',
+  NumLock = "NumLock",
 
   /**
    * The Scroll Lock key. Toggles between scrolling and cursor
    * movement modes.
    */
-  ScrollLock = 'ScrollLock',
+  ScrollLock = "ScrollLock",
 
   /**
    * The Shift key. Modifies keystrokes to allow typing upper (or
    * other) case letters, and to support typing punctuation and other special
    * characters.
    */
-  Shift = 'Shift',
+  Shift = "Shift",
 
   /** The Super key. */
-  Super = 'Super',
+  Super = "Super",
 
   /** The Symbol modifier key (found on certain virtual keyboards). */
-  Symbol = 'Symbol',
+  Symbol = "Symbol",
 
   /** The Symbol Lock key. */
-  SymbolLock = 'SymbolLock',
+  SymbolLock = "SymbolLock",
 
   /**
    * The Enter or ↵ key (sometimes labeled
    * Return).
    */
-  Enter = 'Enter',
+  Enter = "Enter",
 
   /** The Horizontal Tab key, Tab. */
-  Tab = 'Tab',
+  Tab = "Tab",
 
   /** The down arrow key. */
-  ArrowDown = 'ArrowDown',
+  ArrowDown = "ArrowDown",
 
   /** The left arrow key. */
-  ArrowLeft = 'ArrowLeft',
+  ArrowLeft = "ArrowLeft",
 
   /** The right arrow key. */
-  ArrowRight = 'ArrowRight',
+  ArrowRight = "ArrowRight",
 
   /** The up arrow key. */
-  ArrowUp = 'ArrowUp',
+  ArrowUp = "ArrowUp",
 
   /** The End key. Moves to the end of content. */
-  End = 'End',
+  End = "End",
 
   /** The Home key. Moves to the start of content. */
-  Home = 'Home',
+  Home = "Home",
 
   /**
    * The Page Down (or PgDn) key. Scrolls down or
    * displays the next page of content.
    */
-  PageDown = 'PageDown',
+  PageDown = "PageDown",
 
   /**
    * The Page Up (or PgUp) key. Scrolls up or displays
    * the previous page of content.
    */
-  PageUp = 'PageUp',
+  PageUp = "PageUp",
 
   /**
    * The Backspace key. This key is labeled Delete on
    * Mac keyboards.
    */
-  Backspace = 'Backspace',
+  Backspace = "Backspace",
 
   /** The Clear key. Removes the currently selected input. */
-  Clear = 'Clear',
+  Clear = "Clear",
 
   /** The Copy key (on certain extended keyboards). */
-  Copy = 'Copy',
+  Copy = "Copy",
 
   /** The Cursor Select key, CrSel. */
-  CrSel = 'CrSel',
+  CrSel = "CrSel",
 
   /** The Cut key (on certain extended keyboards). */
-  Cut = 'Cut',
+  Cut = "Cut",
 
   /** The Delete key, Del. */
-  Delete = 'Delete',
+  Delete = "Delete",
 
   /**
    * Erase to End of Field. Deletes all characters from the current cursor
    * position to the end of the current field.
    */
-  EraseEof = 'EraseEof',
+  EraseEof = "EraseEof",
 
   /** The ExSel (Extend Selection) key. */
-  ExSel = 'ExSel',
+  ExSel = "ExSel",
 
   /**
    * The Insert key, Ins. Toggles between inserting and
    * overwriting text.
    */
-  Insert = 'Insert',
+  Insert = "Insert",
 
   /** Paste from the clipboard. */
-  Paste = 'Paste',
+  Paste = "Paste",
 
   /** Redo the last action. */
-  Redo = 'Redo',
+  Redo = "Redo",
 
   /** Undo the last action. */
-  Undo = 'Undo',
+  Undo = "Undo",
 
   /**
    * The Accept, Commit, or OK key or
    * button. Accepts the currently selected option or input method sequence
    * conversion.
    */
-  Accept = 'Accept',
+  Accept = "Accept",
 
   /** The Again key. Redoes or repeats a previous action. */
-  Again = 'Again',
+  Again = "Again",
 
   /** The Attn (Attention) key. */
-  Attn = 'Attn',
+  Attn = "Attn",
 
   /** The Cancel key. */
-  Cancel = 'Cancel',
+  Cancel = "Cancel",
 
   /**
    * Shows the context menu. Typically found between the
    * Windows (or OS) key and the Control key
    * on the right side of the keyboard.
    */
-  ContextMenu = 'ContextMenu',
+  ContextMenu = "ContextMenu",
 
   /**
    * The Esc (Escape) key. Typically used as an exit, cancel, or
@@ -201,25 +201,25 @@ export enum Key {
    * used to signal the start of a special control sequence of characters
    * called an "escape sequence."
    */
-  Escape = 'Escape',
+  Escape = "Escape",
 
   /** The Execute key. */
-  Execute = 'Execute',
+  Execute = "Execute",
 
   /**
    * The Find key. Opens an interface (typically a dialog box) for
    * performing a find/search operation.
    */
-  Find = 'Find',
+  Find = "Find",
 
   /** The Finish key. */
-  Finish = 'Finish',
+  Finish = "Finish",
 
   /**
    * The Help key. Opens or toggles the display of help
    * information.
    */
-  Help = 'Help',
+  Help = "Help",
 
   /**
    * The Pause key. Pauses the current application or state, if
@@ -228,7 +228,7 @@ export enum Key {
    * "MediaPause" key value, which is used for media
    * controllers, rather than to control applications and processes.
    */
-  Pause = 'Pause',
+  Pause = "Pause",
 
   /**
    * The Play key. Resumes a previously paused application, if
@@ -237,105 +237,105 @@ export enum Key {
    * "MediaPlay" key value, which is used for media
    * controllers, rather than to control applications and processes.
    */
-  Play = 'Play',
+  Play = "Play",
 
   /** The Props (Properties) key. */
-  Props = 'Props',
+  Props = "Props",
 
   /** The Select key. */
-  Select = 'Select',
+  Select = "Select",
 
   /** The ZoomIn key. */
-  ZoomIn = 'ZoomIn',
+  ZoomIn = "ZoomIn",
 
   /** The ZoomOut key. */
-  ZoomOut = 'ZoomOut',
+  ZoomOut = "ZoomOut",
 
   /**
    * The Brightness Down key. Typically used to reduce the brightness of the
    * display.
    */
-  BrightnessDown = 'BrightnessDown',
+  BrightnessDown = "BrightnessDown",
 
   /**
    * The Brightness Up key. Typically increases the brightness of the
    * display.
    */
-  BrightnessUp = 'BrightnessUp',
+  BrightnessUp = "BrightnessUp",
 
   /**
    * The Eject key. Ejects removable media (or toggles an optical
    * storage device tray open and closed).
    */
-  Eject = 'Eject',
+  Eject = "Eject",
 
   /** The LogOff key. */
-  LogOff = 'LogOff',
+  LogOff = "LogOff",
 
   /**
    * The Power button or key, to toggle power on and off.
    * Note: Not all systems pass this key through to the
    * user agent.
    */
-  Power = 'Power',
+  Power = "Power",
 
   /**
    * The PowerOff or PowerDown key. Shuts off the
    * system.
    */
-  PowerOff = 'PowerOff',
+  PowerOff = "PowerOff",
 
   /**
    * The PrintScreen or PrtScr key. Sometimes
    * SnapShot. Captures the screen and prints it or saves it to
    * disk.
    */
-  PrintScreen = 'PrintScreen',
+  PrintScreen = "PrintScreen",
 
   /**
    * The Hibernate key. This saves the state of the computer to
    * disk and then shuts down; the computer can be returned to its previous
    * state by restoring the saved state information.
    */
-  Hibernate = 'Hibernate',
+  Hibernate = "Hibernate",
 
   /**
    * The Standby key. (Also known as Suspend or
    * Sleep.) This turns off the display and puts the computer in a
    * low power consumption mode, without completely powering off.
    */
-  Standby = 'Standby',
+  Standby = "Standby",
 
   /**
    * The WakeUp key. Used to wake the computer from the
    * hibernation or standby modes.
    */
-  WakeUp = 'WakeUp',
+  WakeUp = "WakeUp",
 
   /**
    * The All Candidates key, which starts multi-candidate mode, in
    * which multiple candidates are displayed for the ongoing input.
    */
-  AllCandidates = 'AllCandidates',
+  AllCandidates = "AllCandidates",
 
   /** The Alphanumeric key. */
-  Alphanumeric = 'Alphanumeric',
+  Alphanumeric = "Alphanumeric",
 
   /**
    * The Code Input key, which enables code input mode, which lets
    * the user enter characters by typing their code points (their Unicode
    * character numbers, typically).
    */
-  CodeInput = 'CodeInput',
+  CodeInput = "CodeInput",
 
   /** The Compose key. */
-  Compose = 'Compose',
+  Compose = "Compose",
 
   /**
    * The Convert key, which instructs the IME to convert the
    * current input method sequence into the resulting character.
    */
-  Convert = 'Convert',
+  Convert = "Convert",
 
   /**
    * A dead "combining" key; that is, a key which is used in tandem with
@@ -347,13 +347,13 @@ export enum Key {
    * compositionupdate event's
    * data property.
    */
-  Dead = 'Dead',
+  Dead = "Dead",
 
   /**
    * The Final (Final Mode) key is used on some Asian keyboards to
    * enter final mode when using IMEs.
    */
-  FinalMode = 'FinalMode',
+  FinalMode = "FinalMode",
 
   /**
    * Switches to the first character group on an
@@ -361,921 +361,921 @@ export enum Key {
    * column. Pressing this key instructs the device to interpret keypresses
    * as coming from the first column on subsequent keystrokes.
    */
-  GroupFirst = 'GroupFirst',
+  GroupFirst = "GroupFirst",
 
   /**
    * Switches to the last character group on an
    * ISO/IEC 9995 keyboard.
    */
-  GroupLast = 'GroupLast',
+  GroupLast = "GroupLast",
 
   /**
    * Switches to the next character group on an
    * ISO/IEC 9995 keyboard.
    */
-  GroupNext = 'GroupNext',
+  GroupNext = "GroupNext",
 
   /**
    * Switches to the previous character group on an
    * ISO/IEC 9995 keyboard.
    */
-  GroupPrevious = 'GroupPrevious',
+  GroupPrevious = "GroupPrevious",
 
   /** The Mode Change key. Toggles or cycles among input modes of IMEs. */
-  ModeChange = 'ModeChange',
+  ModeChange = "ModeChange",
 
   /**
    * The Next Candidate function key. Selects the next possible match for the
    * ongoing input.
    */
-  NextCandidate = 'NextCandidate',
+  NextCandidate = "NextCandidate",
 
   /**
    * The NonConvert ("Don't convert") key. This accepts the
    * current input method sequence without running conversion when using an
    * IME.
    */
-  NonConvert = 'NonConvert',
+  NonConvert = "NonConvert",
 
   /**
    * The Previous Candidate key. Selects the previous possible match for the
    * ongoing input.
    */
-  PreviousCandidate = 'PreviousCandidate',
+  PreviousCandidate = "PreviousCandidate",
 
   /** The Process key. Instructs the IME to process the conversion. */
-  Process = 'Process',
+  Process = "Process",
 
   /**
    * The Single Candidate key. Enables single candidate mode (as opposed to
    * multi-candidate mode); in this mode, only one candidate is displayed at
    * a time.
    */
-  SingleCandidate = 'SingleCandidate',
+  SingleCandidate = "SingleCandidate",
 
   /**
    * The Hangul (Korean character set) mode key, which toggles
    * between Hangul and English entry modes.
    */
-  HangulMode = 'HangulMode',
+  HangulMode = "HangulMode",
 
   /**
    * Selects the Hanja mode, for converting Hangul characters to the more
    * specific Hanja characters.
    */
-  HanjaMode = 'HanjaMode',
+  HanjaMode = "HanjaMode",
 
   /**
    * Selects the Junja mode, in which Korean is represented using single-byte
    * Latin characters.
    */
-  JunjaMode = 'JunjaMode',
+  JunjaMode = "JunjaMode",
 
   /**
    * The Eisu key. This key's purpose is defined by the IME, but
    * may be used to close the IME.
    */
-  Eisu = 'Eisu',
+  Eisu = "Eisu",
 
   /** The Hankaku (half-width characters) key. */
-  Hankaku = 'Hankaku',
+  Hankaku = "Hankaku",
 
   /** The Hiragana key; selects Kana characters mode. */
-  Hiragana = 'Hiragana',
+  Hiragana = "Hiragana",
 
   /** Toggles between the Hiragana and Katakana writing systems. */
-  HiraganaKatakana = 'HiraganaKatakana',
+  HiraganaKatakana = "HiraganaKatakana",
 
   /** The Kana Mode (Kana Lock) key. */
-  KanaMode = 'KanaMode',
+  KanaMode = "KanaMode",
 
   /**
    * The Kanji Mode key. Enables entering Japanese text using the
    * ideographic characters of Chinese origin.
    */
-  KanjiMode = 'KanjiMode',
+  KanjiMode = "KanjiMode",
 
   /** The Katakana key. */
-  Katakana = 'Katakana',
+  Katakana = "Katakana",
 
   /** The Romaji key; selects the Roman character set. */
-  Romaji = 'Romaji',
+  Romaji = "Romaji",
 
   /** The Zenkaku (full width) characters key. */
-  Zenkaku = 'Zenkaku',
+  Zenkaku = "Zenkaku",
 
   /** The Zenkaku/Hankaku (full width/half width) toggle key. */
-  ZenkakuHanaku = 'ZenkakuHanaku',
+  ZenkakuHanaku = "ZenkakuHanaku",
 
   /** The first general-purpose function key, F1. */
-  F1 = 'F1',
+  F1 = "F1",
 
   /** The F2 key. */
-  F2 = 'F2',
+  F2 = "F2",
 
   /** The F3 key. */
-  F3 = 'F3',
+  F3 = "F3",
 
   /** The F4 key. */
-  F4 = 'F4',
+  F4 = "F4",
 
   /** The F5 key. */
-  F5 = 'F5',
+  F5 = "F5",
 
   /** The F6 key. */
-  F6 = 'F6',
+  F6 = "F6",
 
   /** The F7 key. */
-  F7 = 'F7',
+  F7 = "F7",
 
   /** The F8 key. */
-  F8 = 'F8',
+  F8 = "F8",
 
   /** The F9 key. */
-  F9 = 'F9',
+  F9 = "F9",
 
   /** The F10 key. */
-  F10 = 'F10',
+  F10 = "F10",
 
   /** The F11 key. */
-  F11 = 'F11',
+  F11 = "F11",
 
   /** The F12 key. */
-  F12 = 'F12',
+  F12 = "F12",
 
   /** The F13 key. */
-  F13 = 'F13',
+  F13 = "F13",
 
   /** The F14 key. */
-  F14 = 'F14',
+  F14 = "F14",
 
   /** The F15 key. */
-  F15 = 'F15',
+  F15 = "F15",
 
   /** The F16 key. */
-  F16 = 'F16',
+  F16 = "F16",
 
   /** The F17 key. */
-  F17 = 'F17',
+  F17 = "F17",
 
   /** The F18 key. */
-  F18 = 'F18',
+  F18 = "F18",
 
   /** The F19 key. */
-  F19 = 'F19',
+  F19 = "F19",
 
   /** The F20 key. */
-  F20 = 'F20',
+  F20 = "F20",
 
   /** The first general-purpose virtual function key. */
-  Soft1 = 'Soft1',
+  Soft1 = "Soft1",
 
   /** The second general-purpose virtual function key. */
-  Soft2 = 'Soft2',
+  Soft2 = "Soft2",
 
   /** The third general-purpose virtual function key. */
-  Soft3 = 'Soft3',
+  Soft3 = "Soft3",
 
   /** The fourth general-purpose virtual function key. */
-  Soft4 = 'Soft4',
+  Soft4 = "Soft4",
 
   /**
    * Presents a list of recently-used applications which lets the user change
    * apps quickly.
    */
-  AppSwitch = 'AppSwitch',
+  AppSwitch = "AppSwitch",
 
   /** The Call key. Dials the number which has been entered. */
-  Call = 'Call',
+  Call = "Call",
 
   /** The Camera key. Activates the camera. */
-  Camera = 'Camera',
+  Camera = "Camera",
 
   /** The Focus key. Focuses the camera. */
-  CameraFocus = 'CameraFocus',
+  CameraFocus = "CameraFocus",
 
   /** The End Call or Hang Up button. */
-  EndCall = 'EndCall',
+  EndCall = "EndCall",
 
   /** The Back button. */
-  GoBack = 'GoBack',
+  GoBack = "GoBack",
 
   /**
    * The Home button. Returns the user to the phone's main screen
    * (usually an application launcher).
    */
-  GoHome = 'GoHome',
+  GoHome = "GoHome",
 
   /**
    * The Headset Hook key. This is typically actually a button on
    * the headset which is used to hang up calls and play or pause media.
    */
-  HeadsetHook = 'HeadsetHook',
+  HeadsetHook = "HeadsetHook",
 
   /** The Redial button. Redials the last-called number. */
-  LastNumberRedial = 'LastNumberRedial',
+  LastNumberRedial = "LastNumberRedial",
 
   /** The Notification key. */
-  Notification = 'Notification',
+  Notification = "Notification",
 
   /**
    * A button which cycles among the notification modes: silent, vibrate,
    * ring, and so forth.
    */
-  MannerMode = 'MannerMode',
+  MannerMode = "MannerMode",
 
   /** The Voice Dial key. Initiates voice dialing. */
-  VoiceDial = 'VoiceDial',
+  VoiceDial = "VoiceDial",
 
   /** Switches to the previous channel. */
-  ChannelDown = 'ChannelDown',
+  ChannelDown = "ChannelDown",
 
   /** Switches to the next channel. */
-  ChannelUp = 'ChannelUp',
+  ChannelUp = "ChannelUp",
 
   /** Starts, continues, or increases the speed of fast forwarding the media. */
-  MediaFastForward = 'MediaFastForward',
+  MediaFastForward = "MediaFastForward",
 
   /**
    * Pauses the currently playing media.
    * Note: Some older applications use
    * "Pause", but this is not correct.
    */
-  MediaPause = 'MediaPause',
+  MediaPause = "MediaPause",
 
   /**
    * Starts or continues playing media at normal speed, if not already doing
    * so. Has no effect otherwise.
    */
-  MediaPlay = 'MediaPlay',
+  MediaPlay = "MediaPlay",
 
   /** Toggles between playing and pausing the current media. */
-  MediaPlayPause = 'MediaPlayPause',
+  MediaPlayPause = "MediaPlayPause",
 
   /** Starts or resumes recording media. */
-  MediaRecord = 'MediaRecord',
+  MediaRecord = "MediaRecord",
 
   /** Starts, continues, or increases the speed of rewinding the media. */
-  MediaRewind = 'MediaRewind',
+  MediaRewind = "MediaRewind",
 
   /**
    * Stops the current media activity (such as playing, recording, pausing,
    * forwarding, or rewinding). Has no effect if the media is currently
    * stopped already.
    */
-  MediaStop = 'MediaStop',
+  MediaStop = "MediaStop",
 
   /** Seeks to the next media or program track. */
-  MediaTrackNext = 'MediaTrackNext',
+  MediaTrackNext = "MediaTrackNext",
 
   /** Seeks to the previous media or program track. */
-  MediaTrackPrevious = 'MediaTrackPrevious',
+  MediaTrackPrevious = "MediaTrackPrevious",
 
   /** Adjusts audio balance toward the left. */
-  AudioBalanceLeft = 'AudioBalanceLeft',
+  AudioBalanceLeft = "AudioBalanceLeft",
 
   /** Adjusts audio balance toward the right. */
-  AudioBalanceRight = 'AudioBalanceRight',
+  AudioBalanceRight = "AudioBalanceRight",
 
   /** Decreases the amount of bass. */
-  AudioBassDown = 'AudioBassDown',
+  AudioBassDown = "AudioBassDown",
 
   /**
    * Reduces bass boosting or cycles downward through bass boost modes or
    * states.
    */
-  AudioBassBoostDown = 'AudioBassBoostDown',
+  AudioBassBoostDown = "AudioBassBoostDown",
 
   /** Toggles bass boosting on and off. */
-  AudioBassBoostToggle = 'AudioBassBoostToggle',
+  AudioBassBoostToggle = "AudioBassBoostToggle",
 
   /**
    * Increases the amount of bass boosting, or cycles upward through a set of
    * bass boost modes or states.
    */
-  AudioBassBoostUp = 'AudioBassBoostUp',
+  AudioBassBoostUp = "AudioBassBoostUp",
 
   /** Increases the amount of bass. */
-  AudioBassUp = 'AudioBassUp',
+  AudioBassUp = "AudioBassUp",
 
   /** Adjusts the audio fader toward the front. */
-  AudioFaderFront = 'AudioFaderFront',
+  AudioFaderFront = "AudioFaderFront",
 
   /** Adjusts the audio fader toward the rear. */
-  AudioFaderRear = 'AudioFaderRear',
+  AudioFaderRear = "AudioFaderRear",
 
   /** Selects the next available surround sound mode. */
-  AudioSurroundModeNext = 'AudioSurroundModeNext',
+  AudioSurroundModeNext = "AudioSurroundModeNext",
 
   /** Decreases the amount of treble. */
-  AudioTrebleDown = 'AudioTrebleDown',
+  AudioTrebleDown = "AudioTrebleDown",
 
   /** Increases the amount of treble. */
-  AudioTrebleUp = 'AudioTrebleUp',
+  AudioTrebleUp = "AudioTrebleUp",
 
   /** Decreases the audio volume. */
-  AudioVolumeDown = 'AudioVolumeDown',
+  AudioVolumeDown = "AudioVolumeDown",
 
   /** Mutes the audio. */
-  AudioVolumeMute = 'AudioVolumeMute',
+  AudioVolumeMute = "AudioVolumeMute",
 
   /** Increases the audio volume. */
-  AudioVolumeUp = 'AudioVolumeUp',
+  AudioVolumeUp = "AudioVolumeUp",
 
   /** Toggles the microphone on and off. */
-  MicrophoneToggle = 'MicrophoneToggle',
+  MicrophoneToggle = "MicrophoneToggle",
 
   /** Decreases the microphone's input volume. */
-  MicrophoneVolumeDown = 'MicrophoneVolumeDown',
+  MicrophoneVolumeDown = "MicrophoneVolumeDown",
 
   /** Mutes the microphone input. */
-  MicrophoneVolumeMute = 'MicrophoneVolumeMute',
+  MicrophoneVolumeMute = "MicrophoneVolumeMute",
 
   /** Increases the microphone's input volume. */
-  MicrophoneVolumeUp = 'MicrophoneVolumeUp',
+  MicrophoneVolumeUp = "MicrophoneVolumeUp",
 
   /** Switches into TV viewing mode. */
-  TV = 'TV',
+  TV = "TV",
 
   /** Toggles 3D TV mode on and off. */
-  TV3DMode = 'TV3DMode',
+  TV3DMode = "TV3DMode",
 
   /** Toggles between antenna and cable inputs. */
-  TVAntennaCable = 'TVAntennaCable',
+  TVAntennaCable = "TVAntennaCable",
 
   /** Toggles audio description mode on and off. */
-  TVAudioDescription = 'TVAudioDescription',
+  TVAudioDescription = "TVAudioDescription",
 
   /**
    * Decreases the audio description's mixing volume; reduces the volume of
    * the audio descriptions relative to the program sound.
    */
-  TVAudioDescriptionMixDown = 'TVAudioDescriptionMixDown',
+  TVAudioDescriptionMixDown = "TVAudioDescriptionMixDown",
 
   /**
    * Increases the audio description's mixing volume; increases the volume of
    * the audio descriptions relative to the program sound.
    */
-  TVAudioDescriptionMixUp = 'TVAudioDescriptionMixUp',
+  TVAudioDescriptionMixUp = "TVAudioDescriptionMixUp",
 
   /**
    * Displays or hides the media contents available for playback (this may be
    * a channel guide showing the currently airing programs, or a list of
    * media files to play).
    */
-  TVContentsMenu = 'TVContentsMenu',
+  TVContentsMenu = "TVContentsMenu",
 
   /** Displays or hides the TV's data service menu. */
-  TVDataService = 'TVDataService',
+  TVDataService = "TVDataService",
 
   /** Cycles the input mode on an external TV. */
-  TVInput = 'TVInput',
+  TVInput = "TVInput",
 
   /** Switches to the input "Component 1." */
-  TVInputComponent1 = 'TVInputComponent1',
+  TVInputComponent1 = "TVInputComponent1",
 
   /** Switches to the input "Component 2." */
-  TVInputComponent2 = 'TVInputComponent2',
+  TVInputComponent2 = "TVInputComponent2",
 
   /** Switches to the input "Composite 1." */
-  TVInputComposite1 = 'TVInputComposite1',
+  TVInputComposite1 = "TVInputComposite1",
 
   /** Switches to the input "Composite 2." */
-  TVInputComposite2 = 'TVInputComposite2',
+  TVInputComposite2 = "TVInputComposite2",
 
   /** Switches to the input "HDMI 1." */
-  TVInputHDMI1 = 'TVInputHDMI1',
+  TVInputHDMI1 = "TVInputHDMI1",
 
   /** Switches to the input "HDMI 2." */
-  TVInputHDMI2 = 'TVInputHDMI2',
+  TVInputHDMI2 = "TVInputHDMI2",
 
   /** Switches to the input "HDMI 3." */
-  TVInputHDMI3 = 'TVInputHDMI3',
+  TVInputHDMI3 = "TVInputHDMI3",
 
   /** Switches to the input "HDMI 4." */
-  TVInputHDMI4 = 'TVInputHDMI4',
+  TVInputHDMI4 = "TVInputHDMI4",
 
   /** Switches to the input "VGA 1." */
-  TVInputVGA1 = 'TVInputVGA1',
+  TVInputVGA1 = "TVInputVGA1",
 
   /** The Media Context menu key. */
-  TVMediaContext = 'TVMediaContext',
+  TVMediaContext = "TVMediaContext",
 
   /** Toggle the TV's network connection on and off. */
-  TVNetwork = 'TVNetwork',
+  TVNetwork = "TVNetwork",
 
   /** Put the TV into number entry mode. */
-  TVNumberEntry = 'TVNumberEntry',
+  TVNumberEntry = "TVNumberEntry",
 
   /** The device's power button. */
-  TVPower = 'TVPower',
+  TVPower = "TVPower",
 
   /** Radio button. */
-  TVRadioService = 'TVRadioService',
+  TVRadioService = "TVRadioService",
 
   /** Satellite button. */
-  TVSatellite = 'TVSatellite',
+  TVSatellite = "TVSatellite",
 
   /** Broadcast Satellite button. */
-  TVSatelliteBS = 'TVSatelliteBS',
+  TVSatelliteBS = "TVSatelliteBS",
 
   /** Communication Satellite button. */
-  TVSatelliteCS = 'TVSatelliteCS',
+  TVSatelliteCS = "TVSatelliteCS",
 
   /** Toggles among available satellites. */
-  TVSatelliteToggle = 'TVSatelliteToggle',
+  TVSatelliteToggle = "TVSatelliteToggle",
 
   /**
    * Selects analog terrestrial television service (analog cable or antenna
    * reception).
    */
-  TVTerrestrialAnalog = 'TVTerrestrialAnalog',
+  TVTerrestrialAnalog = "TVTerrestrialAnalog",
 
   /**
    * Selects digital terrestrial television service (digital cable or antenna
    * reception).
    */
-  TVTerrestrialDigital = 'TVTerrestrialDigital',
+  TVTerrestrialDigital = "TVTerrestrialDigital",
 
   /** Timer programming button. */
-  TVTimer = 'TVTimer',
+  TVTimer = "TVTimer",
 
   /** Changes the input mode on an external audio/video receiver (AVR) unit. */
-  AVRInput = 'AVRInput',
+  AVRInput = "AVRInput",
 
   /** Toggles the power on an external AVR unit. */
-  AVRPower = 'AVRPower',
+  AVRPower = "AVRPower",
 
   /**
    * General-purpose media function key, color-coded red. This has index
    * 0 among the colored keys.
    */
-  ColorF0Red = 'ColorF0Red',
+  ColorF0Red = "ColorF0Red",
 
   /**
    * General-purpose media function key, color-coded green. This has index
    * 1 among the colored keys.
    */
-  ColorF1Green = 'ColorF1Green',
+  ColorF1Green = "ColorF1Green",
 
   /**
    * General-purpose media function key, color-coded yellow. This has index
    * 2 among the colored keys.
    */
-  ColorF2Yellow = 'ColorF2Yellow',
+  ColorF2Yellow = "ColorF2Yellow",
 
   /**
    * General-purpose media function key, color-coded blue. This has index
    * 3 among the colored keys.
    */
-  ColorF3Blue = 'ColorF3Blue',
+  ColorF3Blue = "ColorF3Blue",
 
   /**
    * General-purpose media function key, color-coded grey. This has index
    * 4 among the colored keys.
    */
-  ColorF4Grey = 'ColorF4Grey',
+  ColorF4Grey = "ColorF4Grey",
 
   /**
    * General-purpose media function key, color-coded brown. This has index
    * 5 among the colored keys.
    */
-  ColorF5Brown = 'ColorF5Brown',
+  ColorF5Brown = "ColorF5Brown",
 
   /** Toggles closed captioning on and off. */
-  ClosedCaptionToggle = 'ClosedCaptionToggle',
+  ClosedCaptionToggle = "ClosedCaptionToggle",
 
   /**
    * Adjusts the brightness of the device by toggling between two brightness
    * levels or by cycling among multiple brightness levels.
    */
-  Dimmer = 'Dimmer',
+  Dimmer = "Dimmer",
 
   /** Cycles among video sources. */
-  DisplaySwap = 'DisplaySwap',
+  DisplaySwap = "DisplaySwap",
 
   /** Switches the input source to the Digital Video Recorder (DVR). */
-  DVR = 'DVR',
+  DVR = "DVR",
 
   /** The Exit button, which exits the current application or menu. */
-  Exit = 'Exit',
+  Exit = "Exit",
 
   /** Clears the program or content stored in the first favorites list slot. */
-  FavoriteClear0 = 'FavoriteClear0',
+  FavoriteClear0 = "FavoriteClear0",
 
   /** Clears the program or content stored in the second favorites list slot. */
-  FavoriteClear1 = 'FavoriteClear1',
+  FavoriteClear1 = "FavoriteClear1",
 
   /** Clears the program or content stored in the third favorites list slot. */
-  FavoriteClear2 = 'FavoriteClear2',
+  FavoriteClear2 = "FavoriteClear2",
 
   /** Clears the program or content stored in the fourth favorites list slot. */
-  FavoriteClear3 = 'FavoriteClear3',
+  FavoriteClear3 = "FavoriteClear3",
 
   /**
    * Selects (recalls) the program or content stored in the first favorites
    * list slot.
    */
-  FavoriteRecall0 = 'FavoriteRecall0',
+  FavoriteRecall0 = "FavoriteRecall0",
 
   /**
    * Selects (recalls) the program or content stored in the second favorites
    * list slot.
    */
-  FavoriteRecall1 = 'FavoriteRecall1',
+  FavoriteRecall1 = "FavoriteRecall1",
 
   /**
    * Selects (recalls) the program or content stored in the third favorites
    * list slot.
    */
-  FavoriteRecall2 = 'FavoriteRecall2',
+  FavoriteRecall2 = "FavoriteRecall2",
 
   /**
    * Selects (recalls) the program or content stored in the fourth favorites
    * list slot.
    */
-  FavoriteRecall3 = 'FavoriteRecall3',
+  FavoriteRecall3 = "FavoriteRecall3",
 
   /**
    * Stores the current program or content into the first favorites list
    * slot.
    */
-  FavoriteStore0 = 'FavoriteStore0',
+  FavoriteStore0 = "FavoriteStore0",
 
   /**
    * Stores the current program or content into the second favorites list
    * slot.
    */
-  FavoriteStore1 = 'FavoriteStore1',
+  FavoriteStore1 = "FavoriteStore1",
 
   /**
    * Stores the current program or content into the third favorites list
    * slot.
    */
-  FavoriteStore2 = 'FavoriteStore2',
+  FavoriteStore2 = "FavoriteStore2",
 
   /**
    * Stores the current program or content into the fourth favorites list
    * slot.
    */
-  FavoriteStore3 = 'FavoriteStore3',
+  FavoriteStore3 = "FavoriteStore3",
 
   /** Toggles the display of the program or content guide. */
-  Guide = 'Guide',
+  Guide = "Guide",
 
   /**
    * If the guide is currently displayed, this button tells the guide to
    * display the next day's content.
    */
-  GuideNextDay = 'GuideNextDay',
+  GuideNextDay = "GuideNextDay",
 
   /**
    * If the guide is currently displayed, this button tells the guide to
    * display the previous day's content.
    */
-  GuidePreviousDay = 'GuidePreviousDay',
+  GuidePreviousDay = "GuidePreviousDay",
 
   /**
    * Toggles the display of information about the currently selected content,
    * program, or media.
    */
-  Info = 'Info',
+  Info = "Info",
 
   /**
    * Tells the device to perform an instant replay (typically some form of
    * jumping back a short amount of time then playing it again, possibly but
    * not usually in slow motion).
    */
-  InstantReplay = 'InstantReplay',
+  InstantReplay = "InstantReplay",
 
   /** Opens content linked to the current program, if available and possible. */
-  Link = 'Link',
+  Link = "Link",
 
   /** Lists the current program. */
-  ListProgram = 'ListProgram',
+  ListProgram = "ListProgram",
 
   /** Toggles a display listing currently available live content or programs. */
-  LiveContent = 'LiveContent',
+  LiveContent = "LiveContent",
 
   /** Locks or unlocks the currently selected content or pgoram. */
-  Lock = 'Lock',
+  Lock = "Lock",
 
   /**
    * Presents a list of media applications, such as photo viewers, audio and
    * video players, and games. [1]
    */
-  MediaApps = 'MediaApps',
+  MediaApps = "MediaApps",
 
   /** The Audio Track key. */
-  MediaAudioTrack = 'MediaAudioTrack',
+  MediaAudioTrack = "MediaAudioTrack",
 
   /** Jumps back to the last-viewed content, program, or other media. */
-  MediaLast = 'MediaLast',
+  MediaLast = "MediaLast",
 
   /** Skips backward to the previous content or program. */
-  MediaSkipBackward = 'MediaSkipBackward',
+  MediaSkipBackward = "MediaSkipBackward",
 
   /** Skips forward to the next content or program. */
-  MediaSkipForward = 'MediaSkipForward',
+  MediaSkipForward = "MediaSkipForward",
 
   /** Steps backward to the previous content or program. */
-  MediaStepBackward = 'MediaStepBackward',
+  MediaStepBackward = "MediaStepBackward",
 
   /** Steps forward to the next content or program. */
-  MediaStepForward = 'MediaStepForward',
+  MediaStepForward = "MediaStepForward",
 
   /**
    * Top Menu button. Opens the media's main menu (e.g., for a DVD or Blu-Ray
    * disc).
    */
-  MediaTopMenu = 'MediaTopMenu',
+  MediaTopMenu = "MediaTopMenu",
 
   /** Navigates into a submenu or option. */
-  NavigateIn = 'NavigateIn',
+  NavigateIn = "NavigateIn",
 
   /** Navigates to the next item. */
-  NavigateNext = 'NavigateNext',
+  NavigateNext = "NavigateNext",
 
   /** Navigates out of the current screen or menu. */
-  NavigateOut = 'NavigateOut',
+  NavigateOut = "NavigateOut",
 
   /** Navigates to the previous item. */
-  NavigatePrevious = 'NavigatePrevious',
+  NavigatePrevious = "NavigatePrevious",
 
   /** Cycles to the next channel in the favorites list. */
-  NextFavoriteChannel = 'NextFavoriteChannel',
+  NextFavoriteChannel = "NextFavoriteChannel",
 
   /**
    * Cycles to the next saved user profile, if this feature is supported and
    * multiple profiles exist.
    */
-  NextUserProfile = 'NextUserProfile',
+  NextUserProfile = "NextUserProfile",
 
   /**
    * Opens the user interface for selecting on demand content or programs to
    * watch.
    */
-  OnDemand = 'OnDemand',
+  OnDemand = "OnDemand",
 
   /** Starts the process of pairing the remote with a device to be controlled. */
-  Pairing = 'Pairing',
+  Pairing = "Pairing",
 
   /** A button to move the picture-in-picture view downward. */
-  PinPDown = 'PinPDown',
+  PinPDown = "PinPDown",
 
   /** A button to control moving the picture-in-picture view. */
-  PinPMove = 'PinPMove',
+  PinPMove = "PinPMove",
 
   /** Toggles display of the picture-in-picture view on and off. */
-  PinPToggle = 'PinPToggle',
+  PinPToggle = "PinPToggle",
 
   /** A button to move the picture-in-picture view upward. */
-  PinPUp = 'PinPUp',
+  PinPUp = "PinPUp",
 
   /** Decreases the media playback rate. */
-  PlaySpeedDown = 'PlaySpeedDown',
+  PlaySpeedDown = "PlaySpeedDown",
 
   /** Returns the media playback rate to normal. */
-  PlaySpeedReset = 'PlaySpeedReset',
+  PlaySpeedReset = "PlaySpeedReset",
 
   /** Increases the media playback rate. */
-  PlaySpeedUp = 'PlaySpeedUp',
+  PlaySpeedUp = "PlaySpeedUp",
 
   /** Toggles random media (also known as "shuffle mode") on and off. */
-  RandomToggle = 'RandomToggle',
+  RandomToggle = "RandomToggle",
 
   /**
    * A code sent when the remote control's battery is low. This doesn't
    * actually correspond to a physical key at all.
    */
-  RcLowBattery = 'RcLowBattery',
+  RcLowBattery = "RcLowBattery",
 
   /** Cycles among the available media recording speeds. */
-  RecordSpeedNext = 'RecordSpeedNext',
+  RecordSpeedNext = "RecordSpeedNext",
 
   /**
    * Toggles radio frequency (RF) input bypass mode on and off. RF bypass
    * mode passes RF input directly to the RF output without any processing or
    * filtering.
    */
-  RfBypass = 'RfBypass',
+  RfBypass = "RfBypass",
 
   /**
    * Toggles the channel scan mode on and off. This is a mode which flips
    * through channels automatically until the user stops the scan.
    */
-  ScanChannelsToggle = 'ScanChannelsToggle',
+  ScanChannelsToggle = "ScanChannelsToggle",
 
   /** Cycles through the available screen display modes. */
-  ScreenModeNext = 'ScreenModeNext',
+  ScreenModeNext = "ScreenModeNext",
 
   /** Toggles display of the device's settings screen on and off. */
-  Settings = 'Settings',
+  Settings = "Settings",
 
   /** Toggles split screen display mode on and off. */
-  SplitScreenToggle = 'SplitScreenToggle',
+  SplitScreenToggle = "SplitScreenToggle",
 
   /** Cycles among input modes on an external set-top box (STB). */
-  STBInput = 'STBInput',
+  STBInput = "STBInput",
 
   /** Toggles on and off an external STB. */
-  STBPower = 'STBPower',
+  STBPower = "STBPower",
 
   /** Toggles the display of subtitles on and off if they're available. */
-  Subtitle = 'Subtitle',
+  Subtitle = "Subtitle",
 
   /**
    * Toggles display of teletext,
    * if available.
    */
-  Teletext = 'Teletext',
+  Teletext = "Teletext",
 
   /** Cycles through the available video modes. */
-  VideoModeNext = 'VideoModeNext',
+  VideoModeNext = "VideoModeNext",
 
   /**
    * Causes the device to identify itself in some fashion, such as by
    * flashing a light, briefly changing the brightness of indicator lights,
    * or emitting a tone.
    */
-  Wink = 'Wink',
+  Wink = "Wink",
 
   /**
    * Toggles between fullscreen and scaled content display, or otherwise
    * change the magnification level.
    */
-  ZoomToggle = 'ZoomToggle',
+  ZoomToggle = "ZoomToggle",
 
   /**
    * Presents a list of possible corrections for a word which was incorrectly
    * identified.
    */
-  SpeechCorrectionList = 'SpeechCorrectionList',
+  SpeechCorrectionList = "SpeechCorrectionList",
 
   /**
    * Toggles between dictation mode and command/control mode. This lets the
    * speech engine know whether to interpret spoken words as input text or as
    * commands.
    */
-  SpeechInputToggle = 'SpeechInputToggle',
+  SpeechInputToggle = "SpeechInputToggle",
 
   /** Closes the current document or message. Must not exit the application. */
-  Close = 'Close',
+  Close = "Close",
 
   /** Creates a new document or message. */
-  New = 'New',
+  New = "New",
 
   /** Opens an existing document or message. */
-  Open = 'Open',
+  Open = "Open",
 
   /** Prints the current document or message. */
-  Print = 'Print',
+  Print = "Print",
 
   /** Saves the current document or message. */
-  Save = 'Save',
+  Save = "Save",
 
   /** Starts spell checking the current document. */
-  SpellCheck = 'SpellCheck',
+  SpellCheck = "SpellCheck",
 
   /** Opens the user interface to forward a message. */
-  MailForward = 'MailForward',
+  MailForward = "MailForward",
 
   /** Opens the user interface to reply to a message. */
-  MailReply = 'MailReply',
+  MailReply = "MailReply",
 
   /** Sends the current message. */
-  MailSend = 'MailSend',
+  MailSend = "MailSend",
 
   /**
    * The Calculator key, often labeled with an icon. This is often
    * used as a generic application launcher key
    * (APPCOMMAND_LAUNCH_APP2).
    */
-  LaunchCalculator = 'LaunchCalculator',
+  LaunchCalculator = "LaunchCalculator",
 
   /** The Calendar key. Often labeled with an icon. */
-  LaunchCalendar = 'LaunchCalendar',
+  LaunchCalendar = "LaunchCalendar",
 
   /** The Contacts key. */
-  LaunchContacts = 'LaunchContacts',
+  LaunchContacts = "LaunchContacts",
 
   /** The Mail key. Often labeled with an icon. */
-  LaunchMail = 'LaunchMail',
+  LaunchMail = "LaunchMail",
 
   /** The Media Player key. */
-  LaunchMediaPlayer = 'LaunchMediaPlayer',
+  LaunchMediaPlayer = "LaunchMediaPlayer",
 
   /** The Music Player key. Often labeled with an icon. */
-  LaunchMusicPlayer = 'LaunchMusicPlayer',
+  LaunchMusicPlayer = "LaunchMusicPlayer",
 
   /**
    * The My Computer key on Windows keyboards. This is often used
    * as a generic application launcher key
    * (APPCOMMAND_LAUNCH_APP1).
    */
-  LaunchMyComputer = 'LaunchMyComputer',
+  LaunchMyComputer = "LaunchMyComputer",
 
   /**
    * The Phone key. Opens the phone dialer application (if one is
    * present).
    */
-  LaunchPhone = 'LaunchPhone',
+  LaunchPhone = "LaunchPhone",
 
   /** The Screen Saver key. */
-  LaunchScreenSaver = 'LaunchScreenSaver',
+  LaunchScreenSaver = "LaunchScreenSaver",
 
   /** The Spreadsheet key. This key may be labeled with an icon. */
-  LaunchSpreadsheet = 'LaunchSpreadsheet',
+  LaunchSpreadsheet = "LaunchSpreadsheet",
 
   /**
    * The Web Browser key. This key is frequently labeled with an
    * icon.
    */
-  LaunchWebBrowser = 'LaunchWebBrowser',
+  LaunchWebBrowser = "LaunchWebBrowser",
 
   /** The WebCam key. Opens the webcam application. */
-  LaunchWebCam = 'LaunchWebCam',
+  LaunchWebCam = "LaunchWebCam",
 
   /**
    * The Word Processor key. This may be an icon of a specific
    * word processor application, or a generic document icon.
    */
-  LaunchWordProcessor = 'LaunchWordProcessor',
+  LaunchWordProcessor = "LaunchWordProcessor",
 
   /** The first generic application launcher button. */
-  LaunchApplication1 = 'LaunchApplication1',
+  LaunchApplication1 = "LaunchApplication1",
 
   /** The second generic application launcher button. */
-  LaunchApplication2 = 'LaunchApplication2',
+  LaunchApplication2 = "LaunchApplication2",
 
   /** The third generic application launcher button. */
-  LaunchApplication3 = 'LaunchApplication3',
+  LaunchApplication3 = "LaunchApplication3",
 
   /** The fourth generic application launcher button. */
-  LaunchApplication4 = 'LaunchApplication4',
+  LaunchApplication4 = "LaunchApplication4",
 
   /** The fifth generic application launcher button. */
-  LaunchApplication5 = 'LaunchApplication5',
+  LaunchApplication5 = "LaunchApplication5",
 
   /** The sixth generic application launcher button. */
-  LaunchApplication6 = 'LaunchApplication6',
+  LaunchApplication6 = "LaunchApplication6",
 
   /** The seventh generic application launcher button. */
-  LaunchApplication7 = 'LaunchApplication7',
+  LaunchApplication7 = "LaunchApplication7",
 
   /** The eighth generic application launcher button. */
-  LaunchApplication8 = 'LaunchApplication8',
+  LaunchApplication8 = "LaunchApplication8",
 
   /** The ninth generic application launcher button. */
-  LaunchApplication9 = 'LaunchApplication9',
+  LaunchApplication9 = "LaunchApplication9",
 
   /** The 10th generic application launcher button. */
-  LaunchApplication10 = 'LaunchApplication10',
+  LaunchApplication10 = "LaunchApplication10",
 
   /** The 11th generic application launcher button. */
-  LaunchApplication11 = 'LaunchApplication11',
+  LaunchApplication11 = "LaunchApplication11",
 
   /** The 12th generic application launcher button. */
-  LaunchApplication12 = 'LaunchApplication12',
+  LaunchApplication12 = "LaunchApplication12",
 
   /** The 13th generic application launcher button. */
-  LaunchApplication13 = 'LaunchApplication13',
+  LaunchApplication13 = "LaunchApplication13",
 
   /** The 14th generic application launcher button. */
-  LaunchApplication14 = 'LaunchApplication14',
+  LaunchApplication14 = "LaunchApplication14",
 
   /** The 15th generic application launcher button. */
-  LaunchApplication15 = 'LaunchApplication15',
+  LaunchApplication15 = "LaunchApplication15",
 
   /** The 16th generic application launcher button. */
-  LaunchApplication16 = 'LaunchApplication16',
+  LaunchApplication16 = "LaunchApplication16",
 
   /**
    * Navigates to the previous content or page in the current Web view's
    * history.
    */
-  BrowserBack = 'BrowserBack',
+  BrowserBack = "BrowserBack",
 
   /** Opens the user's list of bookmarks/favorites. */
-  BrowserFavorites = 'BrowserFavorites',
+  BrowserFavorites = "BrowserFavorites",
 
   /** Navigates to the next content or page in the current Web view's history. */
-  BrowserForward = 'BrowserForward',
+  BrowserForward = "BrowserForward",
 
   /** Navigates to the user's preferred home page. */
-  BrowserHome = 'BrowserHome',
+  BrowserHome = "BrowserHome",
 
   /** Refreshes the current page or content. */
-  BrowserRefresh = 'BrowserRefresh',
+  BrowserRefresh = "BrowserRefresh",
 
   /**
    * Activates the user's preferred search engine or the search interface
    * within their browser.
    */
-  BrowserSearch = 'BrowserSearch',
+  BrowserSearch = "BrowserSearch",
 
   /** Stops loading the currently displayed Web view or content. */
-  BrowserStop = 'BrowserStop',
+  BrowserStop = "BrowserStop",
 
   /**
    * The decimal point key (typically . or
@@ -1283,30 +1283,30 @@ export enum Key {
    * In newer browsers, this value to be the character generated by the
    * decimal key (one of those two characters). [1]
    */
-  Decimal = 'Decimal',
+  Decimal = "Decimal",
 
   /** The 11 key found on certain media numeric keypads. */
-  Key11 = 'Key11',
+  Key11 = "Key11",
 
   /** The 12 key found on certain media numeric keypads. */
-  Key12 = 'Key12',
+  Key12 = "Key12",
 
   /** The numeric keypad's multiplication key, *. */
-  Multiply = 'Multiply',
+  Multiply = "Multiply",
 
   /** The numeric keypad's addition key, +. */
-  Add = 'Add',
+  Add = "Add",
 
   /** The numeric keypad's division key, /. */
-  Divide = 'Divide',
+  Divide = "Divide",
 
   /** The numeric keypad's subtraction key, -. */
-  Subtract = 'Subtract',
+  Subtract = "Subtract",
 
   /**
    * The numeric keypad's places separator character.
    * (In the United States this is a comma, but elsewhere it is frequently
    * a period.)
    */
-  Separator = 'Separator',
+  Separator = "Separator",
 }
