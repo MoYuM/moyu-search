@@ -1,8 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
 
+/* biome-ignore-start lint/suspicious/noUnknownAtRules: tailwind at-rules are valid */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* biome-ignore-end lint/suspicious/noUnknownAtRules: tailwind at-rules are valid */
 
 #plasmo-shadow-container {
   all: initial;

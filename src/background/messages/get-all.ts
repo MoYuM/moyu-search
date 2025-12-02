@@ -1,156 +1,167 @@
-import type { PlasmoMessaging } from '@plasmohq/messaging'
-import Fuse from 'fuse.js'
-import pinyin from 'pinyin'
+import type { PlasmoMessaging } from "@plasmohq/messaging";
+import Fuse from "fuse.js";
+import pinyin from "pinyin";
 
 export interface RequestBody {
-  forceRefresh?: boolean
+  forceRefresh?: boolean;
 }
 
 export interface SearchResult {
-  type: 'tab' | 'history' | 'bookmark'
-  id: string
-  title: string
-  url: string
-  lastAccessed?: number
-  lastVisitTime?: number
-  dateAdded?: number
-  favicon?: string
-  faviconDataUrl?: string
-  titlePinyin?: string
-  titlePinyinInitials?: string
+  type: "tab" | "history" | "bookmark";
+  id: string;
+  title: string;
+  url: string;
+  lastAccessed?: number;
+  lastVisitTime?: number;
+  dateAdded?: number;
+  favicon?: string;
+  faviconDataUrl?: string;
+  titlePinyin?: string;
+  titlePinyinInitials?: string;
 }
 
+// Fuse.js 索引序列化后的类型
+type FuseIndexJSON = ReturnType<
+  ReturnType<typeof Fuse.createIndex<SearchResult>>["toJSON"]
+>;
+
 export interface ResponseBody {
-  results: SearchResult[]
-  fuseIndex?: any // 预生成的 Fuse.js 索引
-  fromCache: boolean
+  results: SearchResult[];
+  fuseIndex?: FuseIndexJSON; // 预生成的 Fuse.js 索引
+  fromCache: boolean;
 }
 
 // 缓存相关
 interface CacheData {
-  results: SearchResult[]
-  fuseIndex: any // Fuse.js 预生成的索引
-  timestamp: number
-  tabsHash: string
+  results: SearchResult[];
+  fuseIndex: FuseIndexJSON; // Fuse.js 预生成的索引
+  timestamp: number;
+  tabsHash: string;
 }
 
-let cache: CacheData | null = null
-const CACHE_DURATION = 30 * 1000 // 30秒缓存
-const CACHE_DURATION_TABS_ONLY = 5 * 1000 // tabs变化频繁，5秒缓存
+let cache: CacheData | null = null;
+const CACHE_DURATION = 30 * 1000; // 30秒缓存
+const CACHE_DURATION_TABS_ONLY = 5 * 1000; // tabs变化频繁，5秒缓存
 
 /**
  * 添加拼音支持
  */
 function addPinyinSupport(items: SearchResult[]): SearchResult[] {
   return items.map((item) => {
-    const title = item.title || ''
-    if (!title)
-      return item
+    const title = item.title || "";
+    if (!title) return item;
 
     try {
       // 生成标题的拼音
       const titlePinyin = pinyin(title, {
         style: pinyin.STYLE_NORMAL,
         heteronym: false,
-      }).flat().join('')
+      })
+        .flat()
+        .join("");
 
       // 生成标题的拼音首字母
       const titlePinyinInitials = pinyin(title, {
         style: pinyin.STYLE_FIRST_LETTER,
         heteronym: false,
-      }).flat().join('')
+      })
+        .flat()
+        .join("");
 
       return {
         ...item,
         titlePinyin,
         titlePinyinInitials,
-      }
+      };
+    } catch {
+      return item;
     }
-    catch {
-      return item
-    }
-  })
+  });
 }
 
 /**
  * 排除零宽度字符
  */
 function formatTitle(title: string) {
-  return title.replaceAll(/\p{Cf}/gu, '')
+  return title.replaceAll(/\p{Cf}/gu, "");
 }
 
 /**
  * 处理书签数据
  */
-function formatBookmark(bookmarks: chrome.bookmarks.BookmarkTreeNode[]): SearchResult[] {
+function formatBookmark(
+  bookmarks: chrome.bookmarks.BookmarkTreeNode[],
+): SearchResult[] {
   return bookmarks
-    .filter(bookmark => bookmark.url)
-    .map(bookmark => ({
-      type: 'bookmark',
+    .filter((bookmark) => bookmark.url)
+    .map((bookmark) => ({
+      type: "bookmark",
       id: bookmark.id,
-      title: formatTitle(bookmark.title) || '',
-      url: bookmark.url || '',
+      title: formatTitle(bookmark.title) || "",
+      url: bookmark.url || "",
       dateAdded: bookmark.dateAdded,
-    }))
+    }));
 }
 
 /**
  * 处理历史记录数据
  */
 function formatHistory(history: chrome.history.HistoryItem[]): SearchResult[] {
-  return history.map(item => ({
-    type: 'history',
-    id: item.id || '',
-    title: formatTitle(item.title) || '',
-    url: item.url || '',
+  return history.map((item) => ({
+    type: "history",
+    id: item.id || "",
+    title: formatTitle(item.title) || "",
+    url: item.url || "",
     lastVisitTime: item.lastVisitTime,
-  }))
+  }));
 }
 
 /**
  * 处理 Tab 数据
  */
 function formatTab(allTabs: chrome.tabs.Tab[]): SearchResult[] {
-  const currentTabId = allTabs[0]?.id
+  const currentTabId = allTabs[0]?.id;
   return allTabs
-    .filter(tab => tab.id !== currentTabId)
-    .map(tab => ({
-      type: 'tab',
-      id: tab.id?.toString() || '',
-      title: formatTitle(tab.title) || '',
-      url: tab.url || '',
-      lastAccessed: (tab as any).lastAccessed || Date.now(),
+    .filter((tab) => tab.id !== currentTabId)
+    .map((tab) => ({
+      type: "tab",
+      id: tab.id?.toString() || "",
+      title: formatTitle(tab.title) || "",
+      url: tab.url || "",
+      lastAccessed:
+        (tab as chrome.tabs.Tab & { lastAccessed?: number }).lastAccessed ||
+        Date.now(),
       favicon: tab.favIconUrl,
-    }))
+    }));
 }
 
 /**
  * 获取所有书签
  */
 async function getAllBookmarks(): Promise<chrome.bookmarks.BookmarkTreeNode[]> {
-  const tree = await chrome.bookmarks.getTree()
-  const bookmarks: chrome.bookmarks.BookmarkTreeNode[] = []
+  const tree = await chrome.bookmarks.getTree();
+  const bookmarks: chrome.bookmarks.BookmarkTreeNode[] = [];
 
   const traverse = (nodes: chrome.bookmarks.BookmarkTreeNode[]) => {
     for (const node of nodes) {
       if (node.url) {
-        bookmarks.push(node)
+        bookmarks.push(node);
       }
       if (node.children) {
-        traverse(node.children)
+        traverse(node.children);
       }
     }
-  }
+  };
 
-  traverse(tree)
-  return bookmarks
+  traverse(tree);
+  return bookmarks;
 }
 
 /**
  * 获取所有 Tabs
  */
 async function getAllTabs(): Promise<chrome.tabs.Tab[]> {
-  return chrome.tabs.query({ active: true, currentWindow: true })
+  return chrome.tabs.query({ active: true, currentWindow: true });
 }
 
 /**
@@ -158,84 +169,79 @@ async function getAllTabs(): Promise<chrome.tabs.Tab[]> {
  */
 async function getAllHistory(): Promise<chrome.history.HistoryItem[]> {
   return chrome.history.search({
-    text: '',
+    text: "",
     maxResults: 1000,
     startTime: 0,
-  })
+  });
 }
 
 // 生成tabs的简单hash用于检测变化
 function generateTabsHash(tabs: chrome.tabs.Tab[]): string {
   return tabs
-    .map(tab => `${tab.id}-${tab.title}-${tab.url}`)
-    .join('|')
-    .slice(0, 100) // 截断以提高性能
+    .map((tab) => `${tab.id}-${tab.title}-${tab.url}`)
+    .join("|")
+    .slice(0, 100); // 截断以提高性能
 }
 
 // 检查缓存是否有效
 function isCacheValid(tabsHash: string, forceRefresh: boolean): boolean {
-  if (forceRefresh || !cache)
-    return false
+  if (forceRefresh || !cache) return false;
 
-  const now = Date.now()
-  const isTimeValid = (now - cache.timestamp) < CACHE_DURATION
-  const isTabsValid = cache.tabsHash === tabsHash
+  const now = Date.now();
+  const isTimeValid = now - cache.timestamp < CACHE_DURATION;
+  const isTabsValid = cache.tabsHash === tabsHash;
 
   // 如果tabs变化了，但时间还在短期缓存内，也认为有效（减少频繁刷新）
-  const isShortTermValid = (now - cache.timestamp) < CACHE_DURATION_TABS_ONLY && isTabsValid
+  const isShortTermValid =
+    now - cache.timestamp < CACHE_DURATION_TABS_ONLY && isTabsValid;
 
-  return isTimeValid && (isTabsValid || isShortTermValid)
+  return isTimeValid && (isTabsValid || isShortTermValid);
 }
 
 const handler: PlasmoMessaging.MessageHandler<
   RequestBody,
   ResponseBody
 > = async (req, res) => {
-  const { forceRefresh = false } = req.body
+  const { forceRefresh = false } = req.body;
 
   try {
     // 获取当前窗口的所有tabs（用于hash检测）
-    const allTabs = await chrome.tabs.query({ currentWindow: true })
-    const tabsHash = generateTabsHash(allTabs)
+    const allTabs = await chrome.tabs.query({ currentWindow: true });
+    const tabsHash = generateTabsHash(allTabs);
 
     // 检查缓存
-    if (isCacheValid(tabsHash, forceRefresh)) {
+    if (isCacheValid(tabsHash, forceRefresh) && cache) {
       res.send({
-        results: cache!.results,
-        fuseIndex: cache!.fuseIndex,
+        results: cache.results,
+        fuseIndex: cache.fuseIndex,
         fromCache: true,
-      })
-      return
+      });
+      return;
     }
 
     const [currentTab, history, bookmarks] = await Promise.all([
       getAllTabs(),
       getAllHistory(),
       getAllBookmarks(),
-    ])
+    ]);
 
     const allResults = [
       ...formatTab(currentTab),
       ...formatHistory(history),
       ...formatBookmark(bookmarks),
-    ]
+    ];
 
     // 添加拼音支持
-    const resultsWithPinyin = addPinyinSupport(allResults)
+    const resultsWithPinyin = addPinyinSupport(allResults);
 
     // 预生成 Fuse.js 索引以加速搜索
     const fuseOptions = {
       includeScore: true,
       threshold: 0.3,
-      keys: [
-        'title',
-        'url',
-        'titlePinyin',
-        'titlePinyinInitials',
-      ],
-    }
+      keys: ["title", "url", "titlePinyin", "titlePinyinInitials"],
+    };
 
-    const fuseIndex = Fuse.createIndex(fuseOptions.keys, resultsWithPinyin)
+    const fuseIndex = Fuse.createIndex(fuseOptions.keys, resultsWithPinyin);
 
     // 更新缓存
     cache = {
@@ -243,21 +249,20 @@ const handler: PlasmoMessaging.MessageHandler<
       fuseIndex: fuseIndex.toJSON(), // 序列化索引以便传输
       timestamp: Date.now(),
       tabsHash,
-    }
+    };
 
     res.send({
       results: resultsWithPinyin,
       fuseIndex: fuseIndex.toJSON(),
       fromCache: false,
-    })
-  }
-  catch (error) {
-    console.error('Error in get-all handler:', error)
+    });
+  } catch (error) {
+    console.error("Error in get-all handler:", error);
     res.send({
       results: [],
       fromCache: false,
-    })
+    });
   }
-}
+};
 
-export default handler
+export default handler;
