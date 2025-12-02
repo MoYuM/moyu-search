@@ -1,4 +1,6 @@
+/** biome-ignore-all lint/a11y/useKeyWithClickEvents: 需要阻止事件冒泡 */
 import cssText from "data-text:~style.css";
+import { sendToBackground } from "@plasmohq/messaging";
 import { useDocumentVisibility } from "ahooks";
 import type { IFuseOptions } from "fuse.js";
 import Fuse from "fuse.js";
@@ -7,8 +9,6 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { useSearchEngine } from "~hooks/useSearchEngine";
 import { useTheme } from "~hooks/useTheme";
 import { DEFAULT_OPTIONS, useUserOptions } from "~store/options";
-import type { ExtensionMessage } from "~types/extension";
-import { safeSendToBackground } from "~utils/safeSendToBackground";
 import { Key } from "../key";
 import type { BangShortcut, SearchResult } from "../type";
 import SearchInput from "./components/searchInput";
@@ -49,13 +49,6 @@ function Popup() {
   const [theme] = useTheme();
   const userOptions = useUserOptions();
   const documentVisibility = useDocumentVisibility();
-
-  useEffect(() => {
-    if (documentVisibility === "visible") {
-      loadRecentTabs();
-      loadAllData();
-    }
-  }, [documentVisibility, loadRecentTabs, loadAllData]);
 
   useEffect(() => {
     if (open) {
@@ -112,12 +105,9 @@ function Popup() {
     const searchUrl = bangMode
       ? getBangSearchUrl(bangMode, searchQuery)
       : getSearchUrl(searchQuery);
-    const message: ExtensionMessage = {
+    sendToBackground({
       name: "new-tab",
       body: { url: searchUrl },
-    };
-    safeSendToBackground(message, { retry: true }).catch((error) => {
-      console.error("Failed to open new tab:", error);
     });
     handleClose();
   };
@@ -132,10 +122,9 @@ function Popup() {
 
   const loadRecentTabs = useCallback(async () => {
     try {
-      const message: ExtensionMessage = { name: "get-recent-tabs" };
-      const { results } = await safeSendToBackground<{
-        results: SearchResult[];
-      }>(message, { retry: true });
+      const { results } = await sendToBackground({
+        name: "get-recent-tabs",
+      });
       setList(results);
     } catch (error) {
       console.error("Failed to load recent tabs:", error);
@@ -158,16 +147,10 @@ function Popup() {
   // 新增：加载所有数据并初始化搜索
   const loadAllData = useCallback(async () => {
     try {
-      const message: ExtensionMessage = {
+      const { results, fuseIndex } = await sendToBackground({
         name: "get-all",
         body: { forceRefresh: false },
-      };
-      const { results, fuseIndex } = await safeSendToBackground<{
-        results: SearchResult[];
-        fuseIndex?: ReturnType<
-          ReturnType<typeof Fuse.createIndex<SearchResult>>["toJSON"]
-        >;
-      }>(message, { retry: true });
+      });
 
       if (fuseIndex) {
         const parsedIndex = Fuse.parseIndex(fuseIndex);
@@ -216,21 +199,15 @@ function Popup() {
     // 如果选中的是 bang 搜索项，直接使用 bang 搜索
     if (res.type === "bang-search" && res.bangMode) {
       const searchUrl = getBangSearchUrl(res.bangMode, searchQuery);
-      const message: ExtensionMessage = {
+      sendToBackground({
         name: "new-tab",
         body: { url: searchUrl },
-      };
-      safeSendToBackground(message, { retry: true }).catch((error) => {
-        console.error("Failed to open new tab:", error);
       });
     } else {
       // 其他情况都按照原逻辑处理，直接跳转到对应的 tab
-      const message: ExtensionMessage = {
+      sendToBackground({
         name: "open-result",
         body: res,
-      };
-      safeSendToBackground(message, { retry: true }).catch((error) => {
-        console.error("Failed to open result:", error);
       });
     }
     handleClose();
@@ -288,19 +265,25 @@ function Popup() {
     [open, list.length, userOptions?.hotkey],
   );
 
+  useEffect(() => {
+    if (documentVisibility === "visible") {
+      loadRecentTabs();
+      loadAllData();
+    }
+  }, [documentVisibility, loadRecentTabs, loadAllData]);
+
   return (
     <div
       className={`fixed left-0 top-0 w-screen h-screen z-[9999] ${theme}`}
       style={{ display: open ? "block" : "none" }}
-      onKeyDown={handleClose}
-      data-moyu-search-popup
+      onClick={handleClose}
     >
       <div
         className={`
           absolute left-1/2 top-1/4 -translate-x-1/2 w-[700px] p-2 flex flex-col rounded-3xl shadow-2xl ${open ? "block" : "hidden"}
           bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700
         `}
-        onKeyDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <SearchInput
           ref={inputRef}

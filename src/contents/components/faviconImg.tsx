@@ -1,18 +1,16 @@
 import Circle from "react:/assets/circle.svg";
+import { sendToBackground } from "@plasmohq/messaging";
 import { useCallback, useEffect, useState } from "react";
-import type { ExtensionMessage } from "~types/extension";
-import { safeSendToBackgroundSimple } from "~utils/safeSendToBackground";
 
 function FaviconImg({ favicon, url }: { favicon?: string; url: string }) {
   const [src, setSrc] = useState<string>("");
 
   const loadFavicon = useCallback(async () => {
     try {
-      const message: ExtensionMessage = {
+      const response = await sendToBackground({
         name: "fetch-favicon",
         body: { url, favicon },
-      };
-      const response = await safeSendToBackgroundSimple(message);
+      });
 
       if (response.dataUrl) {
         setSrc(response.dataUrl);
